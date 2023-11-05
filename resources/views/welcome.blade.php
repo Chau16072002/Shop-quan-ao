@@ -6,13 +6,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Home | E-Shopper</title>
-    <link href="{{ asset("public/fontend/css/bootstrap.min.css") }}" rel="stylesheet">
-    <link href="{{ asset("public/fontend/css/font-awesome.min.css") }}" rel="stylesheet">
-    <link href="{{ asset("public/fontend/css/prettyPhoto.css") }}" rel="stylesheet">
-    <link href="{{ asset("public/fontend/css/price-range.css") }}" rel="stylesheet">
-    <link href="{{ asset("public/fontend/css/animate.css") }}" rel="stylesheet">
-	<link href="{{ asset("public/fontend/css/main.css") }}" rel="stylesheet">
-	<link href="{{ asset("public/fontend/css/responsive.css") }}" rel="stylesheet">
+    <link href="{{ asset("/fontend/css/bootstrap.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("/fontend/css/font-awesome.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("/fontend/css/prettyPhoto.css") }}" rel="stylesheet">
+    <link href="{{ asset("/fontend/css/price-range.css") }}" rel="stylesheet">
+    <link href="{{ asset("/fontend/css/animate.css") }}" rel="stylesheet">
+	<link href="{{ asset("/fontend/css/main.css") }}" rel="stylesheet">
+	<link href="{{ asset("/fontend/css/responsive.css") }}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="public/fontend/js/html5shiv.js"></script>
     <script src="public/fontend/js/respond.min.js"></script>
@@ -57,7 +57,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="index.html"><img src="{{ ("fontent/images/home/logo.png") }}" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -163,8 +163,8 @@
 									<button type="button" class="btn btn-default get">Get it now</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="{{ asset("public/fontend/images/girl1.jpg") }}" class="girl img-responsive" alt="" />
-									<img src="{{ asset("public/fontend/images/pricing.png") }}"  class="pricing" alt="" />
+									<img src="{{ asset("/fontend/images/girl1.jpg") }}" class="girl img-responsive" alt="" />
+									<img src="{{ asset("/fontend/images/pricing.png") }}"  class="pricing" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -175,7 +175,7 @@
 									<button type="button" class="btn btn-default get">Get it now</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="{{ asset("public/fontend/images/girl2.jpg") }}" class="girl img-responsive" alt="" />
+									<img src="{{ asset("/fontend/images/girl2.jpg") }}" class="girl img-responsive" alt="" />
 									<img src="images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
@@ -188,7 +188,7 @@
 									<button type="button" class="btn btn-default get">Get it now</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="{{ asset("public/fontend/images/girl3.jpg") }}" class="girl img-responsive" alt="" />
+									<img src="{{ asset("/fontend/images/girl3.jpg") }}" class="girl img-responsive" alt="" />
 									<img src="images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
@@ -374,7 +374,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{ asset("public/fontend/images/iframe1.png") }}" alt="" />
+										<img src="{{ asset("/fontend/images/iframe1.png") }}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -389,7 +389,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{ asset("public/fontend/images/iframe2.png") }}" alt="" />
+										<img src="{{ asset("/fontend/images/iframe2.png") }}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -404,7 +404,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{ asset("public/fontend/images/iframe3.png") }}" alt="" />
+										<img src="{{ asset("/fontend/images/iframe3.png") }}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -419,7 +419,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{ asset("public/fontend/images/iframe4.png") }}" alt="" />
+										<img src="{{ asset("/fontend/images/iframe4.png") }}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -519,11 +519,11 @@
 
 
 
-    <script src="{{ asset("public/fontend/js/jquery.js") }}"></script>
-	<script src="{{ asset("public/fontend/js/bootstrap.min.js") }}"></script>
-	<script src="{{ asset("public/fontend/js/jquery.scrollUp.min.js") }}"></script>
-	<script src="{{ asset("public/fontend/js/price-range.js") }}"></script>
-    <script src="{{ asset("public/fontend/js/jquery.prettyPhoto.js") }}"></script>
-    <script src="{{ asset("public/fontend/js/main.js") }}"></script>
+    <script src="{{ asset("/fontend/js/jquery.js") }}"></script>
+	<script src="{{ asset("/fontend/js/bootstrap.min.js") }}"></script>
+	<script src="{{ asset("/fontend/js/jquery.scrollUp.min.js") }}"></script>
+	<script src="{{ asset("/fontend/js/price-range.js") }}"></script>
+    <script src="{{ asset("/fontend/js/jquery.prettyPhoto.js") }}"></script>
+    <script src="{{ asset("/fontend/js/main.js") }}"></script>
 </body>
 </html>
