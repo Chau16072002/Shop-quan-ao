@@ -3152,3 +3152,17 @@ span.text-alert {
     text-align: center;
     font-weight: bold;
 }
+
+span.fa-thumbs-styling.fa.fa-thumbs-down {
+    font-size: 30px;
+    color: red;
+}
+
+span.fa-thumbs-styling.fa.fa-thumbs-up {
+    font-size: 30px;
+    color: green;
+}
+
+a.active.styling-edit {
+    font-size: 20px;
+}
