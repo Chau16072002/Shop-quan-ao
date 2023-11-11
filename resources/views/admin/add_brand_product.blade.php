@@ -6,16 +6,10 @@
                 <header class="panel-heading">
                     Thêm thương hiệu sản phẩm
                 </header>
-                <?php
-                $message = Session::get('message');
-                if ($message){
-                    echo '<span class="text-alert">'. $message .'</span>';
-                    session()->put('message', null);
-                }
-                ?>
+
                 <div class="panel-body">
                     <div class="position-center">
-                        <form role="form" action="{{ URL::to('/save-brand-product') }}" method="post">
+                        <form role="form" action="" method="post">
                         {{ csrf_field() }}
                             <div class="form-group">
                             <label for="exampleInputEmail1">Tên thương hiệu</label>

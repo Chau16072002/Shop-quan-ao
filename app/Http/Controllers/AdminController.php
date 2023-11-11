@@ -26,24 +26,6 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
-    // public function dashboard(Request $request) {
-    //     $admin_email = $request->admin_email;
-    //     $admin_password = md5($request->admin_password);
-
-    //     $result = DB::table('tbl_admin')
-    //                 ->where('admin_email', $admin_email)
-    //                 ->where('admin_password', $admin_password)
-    //                 ->first();
-    //     if ($result) {
-    //         session()->put('admin_name', $result->admin_name);
-    //         session()->put('admin_id', $result->admin_id);
-    //         return redirect('/dashboard');
-    //     } else {
-    //         session()->flash('message', 'Tài khoản hoặc Mật khẩu bị sai. Làm ơn nhập lại!!!');
-    //         return redirect('/admin');
-    //     }
-    // }
-
     public function dashboard(Request $request){
         $admin_email = $request->admin_email;
         $admin_password = md5($request->admin_password);
@@ -56,10 +38,10 @@ class AdminController extends Controller
         if ($result) {
             session()->put('admin_name', $result->admin_name);
             session()->put('admin_id', $result->admin_id);
-            return redirect('/dashboard');
+            return redirect()->to('dashboard');
         } else {
             session()->flash('message', 'Tài khoản hoặc Mật khẩu bị sai. Làm ơn nhập lại!!!');
-            return redirect('/admin');
+            return redirect()->to('admin');
 
         }
     }
@@ -68,6 +50,6 @@ class AdminController extends Controller
         $this->AuthLogin();
         session()->forget('admin_name');
         session()->forget('admin_id');
-        return redirect('/admin');
+        return redirect()->to('admin');
     }
 }
