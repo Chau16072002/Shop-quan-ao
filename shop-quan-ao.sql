@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 06, 2023 lúc 01:17 AM
+-- Thời gian đã tạo: Th10 11, 2023 lúc 01:12 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -20,6 +20,36 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `shop-quan-ao`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT 0,
+  `category_name` varchar(191) NOT NULL,
+  `category_desc` text NOT NULL,
+  `category_status` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `categories`
+--
+
+INSERT INTO `categories` (`id`, `parent_id`, `category_name`, `category_desc`, `category_status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 0, 'Menu 1', 'menu-1', 1, '2023-11-10 02:44:38', '2023-11-10 02:44:38', NULL),
+(2, 0, 'Menu 2', 'menu-2', 1, '2023-11-10 02:44:54', '2023-11-10 02:44:54', NULL),
+(3, 0, 'Menu 1.1', 'menu-1.1', 1, '2023-11-10 02:48:42', '2023-11-10 02:48:42', NULL),
+(4, 0, 'Menu 1.1.1', 'menu-1.1.1', 1, '2023-11-10 03:09:42', '2023-11-10 03:09:42', NULL),
+(5, 2, 'Menu 2.1gfgfgf', 'menu-2.1', 0, '2023-11-10 03:13:42', '2023-11-10 03:44:37', '2023-11-10 03:44:37'),
+(6, 0, 'Menu 3', 'menu-3', 1, '2023-11-10 03:37:37', '2023-11-10 03:37:37', NULL),
+(7, 6, 'Menu 3.1', 'menu-3.1', 0, '2023-11-10 03:37:52', '2023-11-10 03:37:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -61,7 +91,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2023_11_03_225647_create_tbl_admin_table', 1),
 (6, '2023_11_05_171457_create_tbl_category_product', 2),
 (7, '2023_11_05_202027_create_tbl_brand_product', 3),
-(8, '2023_11_05_210239_create_tbl_product', 4);
+(8, '2023_11_05_210239_create_tbl_product', 4),
+(9, '2023_11_10_052244_create_tbl_categories', 5),
+(10, '2023_11_10_055601_create_categories', 6),
+(11, '2023_11_10_065440_create_categories', 7),
+(14, '2023_11_10_065620_create_categories', 8),
+(15, '2023_11_10_101817_add_column_delete_at_table_categories', 9);
 
 -- --------------------------------------------------------
 
@@ -144,32 +179,6 @@ INSERT INTO `tbl_brand_product` (`brand_id`, `brand_name`, `brand_desc`, `brand_
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `tbl_category_product`
---
-
-CREATE TABLE `tbl_category_product` (
-  `category_id` int(10) UNSIGNED NOT NULL,
-  `category_name` varchar(255) NOT NULL,
-  `category_desc` text NOT NULL,
-  `category_status` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `tbl_category_product`
---
-
-INSERT INTO `tbl_category_product` (`category_id`, `category_name`, `category_desc`, `category_status`, `created_at`, `updated_at`) VALUES
-(1, 'ahihih', 'add', 1, NULL, NULL),
-(2, 'oke', 'fhfgh', 0, NULL, NULL),
-(3, 'Samsung', 'Samsung', 0, NULL, NULL),
-(4, 'Oppo', 'Oppo', 0, NULL, NULL),
-(5, 'Apple', 'Apple', 0, NULL, NULL);
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `tbl_product`
 --
 
@@ -217,6 +226,12 @@ CREATE TABLE `users` (
 --
 
 --
+-- Chỉ mục cho bảng `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -250,12 +265,6 @@ ALTER TABLE `tbl_brand_product`
   ADD PRIMARY KEY (`brand_id`);
 
 --
--- Chỉ mục cho bảng `tbl_category_product`
---
-ALTER TABLE `tbl_category_product`
-  ADD PRIMARY KEY (`category_id`);
-
---
 -- Chỉ mục cho bảng `tbl_product`
 --
 ALTER TABLE `tbl_product`
@@ -272,6 +281,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT cho bảng `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -281,7 +296,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT cho bảng `personal_access_tokens`
@@ -300,12 +315,6 @@ ALTER TABLE `tbl_admin`
 --
 ALTER TABLE `tbl_brand_product`
   MODIFY `brand_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT cho bảng `tbl_category_product`
---
-ALTER TABLE `tbl_category_product`
-  MODIFY `category_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `tbl_product`
