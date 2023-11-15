@@ -14,4 +14,7 @@ class HomeController extends Controller
         return view('pages.home',compact('categorys','brandes'));
 
     }
+    public function login(){
+        return view('cus_login');
+    }
 }

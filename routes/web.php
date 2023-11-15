@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +22,16 @@ use App\Http\Controllers\ProductController;
 //Fontend
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/trang-chu', [HomeController::class, 'index']);
-
+Route::get('/dang-nhap',[HomeController::class, 'login']);
+Route::get('/dang-ky',[HomeController::class,'register']);
+Route::post('/',[CustomerController::class, 'login']);
+Route::post('/dangky',[CustomerController::class,'register']);
+Route::get('/logoutCustomer', [CustomerController::class, 'logout']);
+Route::get('/account',[CustomerController::class, 'account']);
+Route::get('/change-password',[CustomerController::class,'changePassword']);
+Route::post('/edit-customer',[CustomerController::class,'editCustomer']);
+Route::post('/change-password',[CustomerController::class,'change_Password']);
+//Backend
 //Backend
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('show_dashboard');
