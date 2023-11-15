@@ -1,15 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Components\Recusive;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Category;
+use App\Models\Brand;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use App\Traits\StorageImageTrait;
+use App\Models\Product;
+use App\Models\ProductImage;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use App\Http\Requests\ProductAddRequest;
+
+
+
 session_start();
 
 class ProductController extends Controller
 {
+    private $category;
+    private $productImage;
+   use StorageImageTrait;
     public function AuthLogin(){
         $admin_id = session()->get('admin_id');
         if ($admin_id){
@@ -18,118 +35,147 @@ class ProductController extends Controller
             return redirect('admin')->send();
         }
     }
-    public function add_product() {
-        $this->AuthLogin();
-        $cate_product = DB::table('tbl_category_product')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand_product')->orderby('brand_id', 'desc')->get();
-        return view('admin.add_product')->with('cate_product', $cate_product)->with('brand_product', $brand_product);
+    
+    public function __construct(Category $category, Product $product, ProductImage $productImage){
+        $this->category = $category;
+        $this->product = $product;
+        $this->productImage = $productImage;
     }
-
-    public function all_product() {
-        $this->AuthLogin();
-
-        $all_product = DB::table('tbl_product')
-        ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
-        ->join('tbl_brand_product','tbl_brand_product.brand_id','=','tbl_product.brand_id')
-        ->orderby('tbl_product.product_id','desc')->get();
-
-
-        $maneger_product = view('admin.all_product')->with('all_product', $all_product);
-        return view('admin_layout')->with('admin.all_product', $maneger_product);
+   
+    public function create(){
+        $htmlOption = $this->getCategory($parentId = '');
+        $brandes = Brand::where('brand_status',1)->get();
+        return view('admin.add_product',compact('brandes','htmlOption'));
     }
-
-    public function save_product(Request $request) {
+    public function index() {
         $this->AuthLogin();
-        $data = array();
-        $data['product_name'] = $request->product_name;
-        $data['product_price'] = $request->product_price;
-        $data['product_desc'] = $request->product_desc;
-        $data['product_content'] = $request->product_content;
-        $data['category_id'] = $request->product_cate;
-        $data['brand_id'] = $request->product_brand;
-        $data['product_status'] = $request->product_status;
-        $data['product_image'] = $request->product_image;
-        $get_image = $request->file('product_image');
 
-        if($get_image){
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.',$get_name_image));
-            $new_image = $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('uploads/product',$new_image);
-            $data['product_image'] = $new_image;
+        $products =  $this->product->latest()->paginate(5);
+        return view('admin.all_product', compact('products'));
+    }
+    public function getCategory($parentId){
+        $data = $this->category->all();
+        $recusive = new Recusive($data);
+        $htmlOption = $recusive->categoryRecusive($parentId);
+        return $htmlOption;
+    }
+    public function store(ProductAddRequest $request){
+            $dataProduct = [
+                'product_name' => $request->product_name,
+                'product_price' => $request->product_price,
+                'product_desc' => $request->product_desc,
+                'product_content' => $request->product_content,
+                'category_id' => $request->category_id,
+                'brand_id' =>$request->brand_id,
+                'product_status' => $request->product_status
+            ];
+            $data = $this->storageTraitUpload($request,'product_image','product');
+            if(!empty($data)){
+                $dataProduct['product_image'] = $data['file_path'];
+    
+            }
+            $product = $this->product->create($dataProduct);
+            session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
+            return redirect()->route('product_create');            
 
-            DB::table('tbl_product')->insert($data);
-            session()->put('message', 'Thêm sản phẩm thành công');
-            return redirect('/all-product');
+        //Insert data to product images
+        if($request->hasFile('image_path')){
+            foreach($request->image_path as $fileItem){
+                $dataChitietHinhAnhProduct = $this->storageTraitUploadMutiple($fileItem,'product');
+                $product->images()->create(
+                    [    
+                        'image_path' =>  $dataChitietHinhAnhProduct['file_path']
+                    ]
+                );
+            }
+            
+            session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
+            return redirect()->route('product_create');   
         }
-        $data['product_image'] ='';
-        DB::table('tbl_product')->insert($data);
-        session()->put('message', 'Thêm sản phẩm thành công');
-        return redirect('/all-product');
-    }
+    
 
-    public function unactive_product($product_id) {
+    }
+    public function unactive_Product($id) {
         $this->AuthLogin();
-        DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status'=>1]);
-        session()->put('message', 'Hiển thị thương hiệu sản phẩm thành công');
-        return redirect('/all-product');
+        $data = $this->product->where('product_id', $id)->update(['product_status'=>1]);
+        session()->put('message', 'Hiển sản phẩm thành công');
+        return redirect()->route('product_index');
 
     }
 
-    public function active_product($product_id) {
+    public function active_Product($id) {
         $this->AuthLogin();
-        DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status'=>0]);
-        session()->put('message', 'Ẩn thương hiệu sản phẩm thành công');
-        return redirect('/all-product');
+        $data = $this->product->where('product_id', $id)->update(['product_status'=>0]);
+        session()->put('message', 'Ẩn sản phẩm thành công');
+        return redirect()->route('product_index');
     }
 
-    public function edit_product($product_id){
-        $this->AuthLogin();
-        $cate_product = DB::table('tbl_category_product')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand_product')->orderby('brand_id', 'desc')->get();
+    public function edit($id)
+    {
+       
+        $brandes = Brand::where('brand_status',1)->get();
+        $product = $this->product->find($id);
+        
+        $htmlOption = $this->getCategory($product->category_id);
 
-        $edit_product = DB::table('tbl_product')->where('product_id', $product_id)->get();
+        return view('admin.edit_product', compact('htmlOption','product','brandes'));
 
-        $maneger_product = view('admin.edit_product')->with('edit_product', $edit_product)->with('cate_product', $cate_product)
-        ->with('brand_product', $brand_product);
-        return view('admin_layout')->with('admin.edit_product', $maneger_product);
     }
 
-    public function update_product(Request $request, $product_id){
-        $this->AuthLogin();
-        $data = array();
-        $data['product_name'] = $request->product_name;
-        $data['product_price'] = $request->product_price;
-        $data['product_desc'] = $request->product_desc;
-        $data['product_content'] = $request->product_content;
-        $data['category_id'] = $request->product_cate;
-        $data['brand_id'] = $request->product_brand;
-        $data['product_status'] = $request->product_status;
-        $data['product_image'] = $request->product_image;
+    public function update($id, Request $request)
+    {
+        $dataProductUpdate = [
+            'product_name' => $request->product_name,
+            'product_price' => $request->product_price,
+            'product_desc' => $request->product_desc,
+            'product_content' => $request->product_content,
+            'category_id' => $request->category_id,
+            'brand_id' =>$request->brand_id,
+            'product_status' => $request->product_status
+        ];
+        $data = $this->storageTraitUpload($request,'product_image','product');
+        if(!empty($data)){
+            $dataProductUpdate['product_image'] = $data['file_path'];
 
-        $get_image = $request->file('product_image');
-
-        if($get_image){
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.',$get_name_image));
-            $new_image = $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('uploads/product',$new_image);
-            $data['product_image'] = $new_image;
-
-            DB::table('tbl_product')->where('product_id', $product_id)->update($data);
-            session()->put('message', 'Cập nhật sản phẩm thành công');
-            return redirect('/all-product');
         }
+        $this->product->find($id)->update($dataProductUpdate);  
+        $product = $this->product->find($id);          
 
-        DB::table('tbl_product')->where('product_id', $product_id)->update($data);
-        session()->put('message', 'Cập nhật sản phẩm thành công');
-        return redirect('/all-product');
+    //Insert data to product images
+    if($request->hasFile('image_path')){
+        $this->productImage->where('product_id', $id)->delete();
+        foreach($request->image_path as $fileItem){
+            $dataChitietHinhAnhProduct = $this->storageTraitUploadMutiple($fileItem,'product');
+            $product->images()->create(
+                [    
+                    'image_path' =>  $dataChitietHinhAnhProduct['file_path']
+                ]
+            );
+        }
+        
+        session()->flash('message', 'Cập nhập sản phẩm thành công !!!');
+        return redirect()->route('product_index');   
     }
 
-    public function delete_product($product_id){
-        $this->AuthLogin();
-        DB::table('tbl_product')->where('product_id', $product_id)->delete();
-        session()->put('message', 'Xóa thương hiệu sản phẩm thành công');
-        return redirect('/all-product');
+       
+    }
+    public function delete($id){
+        try{
+            $this->product->find($id)->delete();
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ], 200);
+
+        }catch(\Exception $exception){
+            Log::error('Message:' . $exception->getMessage(). '--- Line: '. $exception->getLine());
+            return response()->json([
+                'code' => 500,
+                'message' => 'fail'
+
+            ], 500);
+
+        }
+        
     }
 }

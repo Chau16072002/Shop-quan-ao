@@ -29,8 +29,8 @@
                         <span>Thương hiệu sản phẩm</span>
                     </a>
                     <ul class="sub">
-						<li><a href="">Thêm thương hiệu sản phẩm</a></li>
-						<li><a href="">Liệt kê thương hiệu sản phẩm</a></li>
+						<li><a href="{{ route('brand_create') }}">Thêm thương hiệu sản phẩm</a></li>
+						<li><a href="{{ route('brand_index') }}">Liệt kê thương hiệu sản phẩm</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
@@ -39,8 +39,8 @@
                         <span>Sản phẩm</span>
                     </a>
                     <ul class="sub">
-						<li><a href="">Thêm sản phẩm</a></li>
-						<li><a href="">Liệt kê sản phẩm</a></li>
+						<li><a href="{{route('product_create')}}">Thêm sản phẩm</a></li>
+						<li><a href="{{route('product_index')}}">Liệt kê sản phẩm</a></li>
                     </ul>
                 </li>
 

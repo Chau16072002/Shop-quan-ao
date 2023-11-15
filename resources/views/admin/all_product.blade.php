@@ -1,4 +1,4 @@
-@extends('admin_layout')
+@extends('layouts.admin_layout')
 @section('admin_content')
 <div class="table-agile-info">
     <div class="panel panel-default">
@@ -54,36 +54,36 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($all_product as $key => $pro)
+            @foreach ($products as $productItem)
 
 
             <tr>
               <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-              <td>{{ $pro->product_name }}</td>
-              <td>{{ $pro->product_price }}</td>
-              <td><img src="/uploads/product/{{ $pro->product_image }}" height="100" width="100" alt=""></td>
-              <td>{{ $pro->category_name }}</td>
-              <td>{{ $pro->brand_name }}</td>
+              <td>{{ $productItem->product_name }}</td>
+              <td>{{ $productItem->product_price }}</td>
+              <td><img src="{{ $productItem->product_image }}" height="100" width="100" alt=""></td>
+              <td>{{ $productItem->category->category_name }}</td>
+              <td>{{ $productItem->brand->brand_name }}</td>
 
               <td><span class="text-ellipsis">
                 <?php
-                    if ($pro->product_status == 0){
+                    if ($productItem->product_status == 0){
                 ?>
-                    <a href="{{ URL::to('/unactive-product/'.$pro->product_id) }}"><span class="fa-thumbs-styling fa fa-thumbs-down"></span></a>
+                    <a href="{{ route('unactive_product', ['id' =>$productItem->id]) }}"><span class="fa-thumbs-styling fa fa-thumbs-down"></span></a>
                 <?php
                     }else {
                 ?>
-                    <a href="{{ URL::to('/active-product/'.$pro->product_id) }}"><span class="fa-thumbs-styling fa fa-thumbs-up"></span></a>
+                    <a href="{{ route('active_product', ['id' =>$productItem->id]) }}"><span class="fa-thumbs-styling fa fa-thumbs-up"></span></a>
                 <?php
                     }
                 ?>
             </span></td>
 
               <td>
-                <a href="{{ URL::to('/edit-product/'.$pro->product_id) }}" class="active styling-edit" ui-toggle-class="">
+                <a href="{{ route('product_edit', ['id' =>$productItem->id]) }}" value="{{$productItem->id}}" class="active styling-edit" ui-toggle-class="">
                     <i class="fa fa-pencil-square-o text-success text-active"></i>
                 </a>
-                <a onclick="return confirm('Bạn có chắc là muốn xóa sản phẩm này không?')" href="{{ URL::to('/delete-product/'.$pro->product_id) }}" class="active styling-edit" ui-toggle-class="">
+                <a  href="" data-url="{{ route('product_delete', ['id' =>$productItem->id]) }}" class="active styling-edit action_delete"  ui-toggle-class="">
                     <i class="fa fa-times text-danger text"></i>
                 </a>
               </td>

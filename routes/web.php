@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BrandProduct;
+use App\Http\Controllers\ProductController;
 
 
 /*
@@ -40,6 +42,33 @@ Route::prefix('categories')->group(function () {
     Route::post('/update/{id}', [CategoryController::class, 'update'])->name('category_update');
     Route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('category_delete');
 });
+//Brand-Product
+Route::prefix('brands')->group(function () {
+    Route::get('/', [BrandProduct::class, 'index'])->name('brand_index');
+    Route::get('/create', [BrandProduct::class, 'create'])->name('brand_create');
+    Route::post('/store', [BrandProduct::class, 'store'])->name('brand_store');
 
+    Route::get('/unactive-Brand/{id}', [BrandProduct::class, 'unactive_Brand'])->name('unactive_brand');
+    Route::get('/active-Brand/{id}', [BrandProduct::class, 'active_Brand'])->name('active_brand');
 
+    Route::get('/edit/{id}', [BrandProduct::class, 'edit'])->name('brand_edit');
+    Route::post('/update/{id}', [BrandProduct::class, 'update'])->name('brand_update');
+    Route::get('/delete/{id}', [BrandProduct::class, 'delete'])->name('brand_delete');
 
+});
+
+//Product
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('product_index');
+    Route::get('/create', [ProductController::class, 'create'])->name('product_create');
+    Route::post('/store', [ProductController::class, 'store'])->name('product_store');
+
+    Route::get('/unactive-product/{id}', [ProductController::class, 'unactive_Product'])->name('unactive_product');
+    Route::get('/active-product/{id}', [ProductController::class, 'active_Product'])->name('active_product');
+
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product_edit');
+    Route::post('/update/{id}', [ProductController::class, 'update'])->name('product_update');
+    Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product_delete');
+   
+
+});

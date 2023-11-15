@@ -25,6 +25,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset("/backend/js/jquery2.0.3.min.js") }}"></script>
 <script src="{{ asset("/backend/js/raphael-min.js") }}"></script>
 <script src="{{ asset("/backend/js/morris.js") }}"></script>
+<!-- Public -->
+<script src="{{ asset("/adminss/product/add/add.css") }}"></script>
+<script src="{{ asset("/adminss/product/add/add.js") }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <section id="container">
@@ -50,6 +54,48 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset("/backend/js/jquery.nicescroll.js") }}"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{ asset("/backend/js/jquery.scrollTo.js") }}"></script>
+<script>
+	function actionDelete(event){
+		event.preventDefault();	
+		let urlRequest = $(this).data('url');
+		let that = $(this);
+		Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+	$.ajax({
+		type: 'GET',
+		url: urlRequest,
+		success:function(data){
+			if(data.code == 200){
+				that.parent().parent().remove();
+				Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success"
+    });
+			}
+		},
+		error:function(){
+
+		}
+  });
+    
+  }
+});
+	}
+
+
+	$( function(){
+    $(document).on('click','.action_delete', actionDelete);
+});
+</script>
 <!-- morris JavaScript -->
 <script>
 	$(document).ready(function() {
