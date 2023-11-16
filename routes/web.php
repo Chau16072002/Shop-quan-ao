@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SilderAdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,8 @@ Route::get('/change-password',[CustomerController::class,'changePassword']);
 Route::post('/edit-customer',[CustomerController::class,'editCustomer']);
 Route::post('/change-password',[CustomerController::class,'change_Password']);
 //Backend
+Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
+
 //Backend
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('show_dashboard');
@@ -78,6 +82,18 @@ Route::prefix('products')->group(function () {
     Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product_edit');
     Route::post('/update/{id}', [ProductController::class, 'update'])->name('product_update');
     Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product_delete');
-   
+});
 
+//Slider
+Route::prefix('slider')->group(function () {
+    Route::get('/', [SilderAdminController::class, 'index'])->name('slider_index');
+    Route::get('/create', [SilderAdminController::class, 'create'])->name('slider_create');
+    Route::post('/store', [SilderAdminController::class, 'store'])->name('slider_store');
+
+    Route::get('/unactive-slider/{id}', [SilderAdminController::class, 'unactive_slider'])->name('unactive_slider');
+    Route::get('/active-slider/{id}', [SilderAdminController::class, 'active_slider'])->name('active_slider');
+
+    Route::get('/edit/{id}', [SilderAdminController::class, 'edit'])->name('slider_edit');
+    Route::post('/update/{id}', [SilderAdminController::class, 'update'])->name('slider_update');
+    Route::get('/delete/{id}', [SilderAdminController::class, 'delete'])->name('slider_delete');
 });

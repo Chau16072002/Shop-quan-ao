@@ -25,8 +25,9 @@ class BrandProduct extends Controller
         $this->brand = $brand;
     }
 
-    public function create(){
-        return view('admin.add_brand_product');
+    public function create() {
+        $this->AuthLogin();
+        return view('admin.brand.add_brand_product');
     }
 
 
@@ -35,7 +36,7 @@ class BrandProduct extends Controller
         $this->AuthLogin();
 
         $brands =  $this->brand->latest()->paginate(5);
-        return view('admin.all_brand_product', compact('brands'));
+        return view('admin.brand.all_brand_product', compact('brands'));
     }
 
     public function unactive_brand($id) {
@@ -75,7 +76,7 @@ class BrandProduct extends Controller
     {
         $brand = $this->brand->find($id);
 
-        return view('admin.edit_brand_product', compact('brand'));
+        return view('admin.brand.edit_brand_product', compact('brand'));
 
     }
 

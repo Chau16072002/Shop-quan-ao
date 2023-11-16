@@ -29,16 +29,14 @@ class CategoryController extends Controller
 
     public function create(){
         $htmlOption = $this->getCategory($parentId = '');
-        return view('admin.add_category_product', compact('htmlOption'));
+        return view('admin.category.add_category_product', compact('htmlOption'));
     }
-
-
 
     public function index() {
         $this->AuthLogin();
 
         $categories =  $this->category->latest()->paginate(5);
-        return view('admin.all_category_product', compact('categories'));
+        return view('admin.category.all_category_product', compact('categories'));
     }
 
     public function unactive_category($id) {
@@ -80,7 +78,7 @@ class CategoryController extends Controller
         $category = $this->category->find($id);
         $htmlOption = $this->getCategory($category->parent_id);
 
-        return view('admin.edit_category_product', compact('category', 'htmlOption'));
+        return view('admin.category.edit_category_product', compact('category', 'htmlOption'));
 
     }
 
@@ -97,6 +95,7 @@ class CategoryController extends Controller
 
     public function delete($id){
         $this->category->find($id)->delete();
+        session()->flash('message', 'Xóa danh mục sản phẩm thành công !!!');
         return redirect()->route('category_index');
     }
 }

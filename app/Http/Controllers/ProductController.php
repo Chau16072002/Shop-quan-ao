@@ -35,23 +35,23 @@ class ProductController extends Controller
             return redirect('admin')->send();
         }
     }
-    
+
     public function __construct(Category $category, Product $product, ProductImage $productImage){
         $this->category = $category;
         $this->product = $product;
         $this->productImage = $productImage;
     }
-   
+
     public function create(){
         $htmlOption = $this->getCategory($parentId = '');
         $brandes = Brand::where('brand_status',1)->get();
-        return view('admin.add_product',compact('brandes','htmlOption'));
+        return view('admin.products.add_product',compact('brandes','htmlOption'));
     }
     public function index() {
         $this->AuthLogin();
 
         $products =  $this->product->latest()->paginate(5);
-        return view('admin.all_product', compact('products'));
+        return view('admin.products.all_product', compact('products'));
     }
     public function getCategory($parentId){
         $data = $this->category->all();
@@ -72,32 +72,32 @@ class ProductController extends Controller
             $data = $this->storageTraitUpload($request,'product_image','product');
             if(!empty($data)){
                 $dataProduct['product_image'] = $data['file_path'];
-    
+
             }
             $product = $this->product->create($dataProduct);
             session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
-            return redirect()->route('product_create');            
+            return redirect()->route('product_create');
 
         //Insert data to product images
         if($request->hasFile('image_path')){
             foreach($request->image_path as $fileItem){
                 $dataChitietHinhAnhProduct = $this->storageTraitUploadMutiple($fileItem,'product');
                 $product->images()->create(
-                    [    
+                    [
                         'image_path' =>  $dataChitietHinhAnhProduct['file_path']
                     ]
                 );
             }
-            
+
             session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
-            return redirect()->route('product_create');   
+            return redirect()->route('product_create');
         }
-    
+
 
     }
     public function unactive_Product($id) {
         $this->AuthLogin();
-        $data = $this->product->where('product_id', $id)->update(['product_status'=>1]);
+        $data = $this->product->where('id', $id)->update(['product_status'=>1]);
         session()->put('message', 'Hiển sản phẩm thành công');
         return redirect()->route('product_index');
 
@@ -105,20 +105,20 @@ class ProductController extends Controller
 
     public function active_Product($id) {
         $this->AuthLogin();
-        $data = $this->product->where('product_id', $id)->update(['product_status'=>0]);
+        $data = $this->product->where('id', $id)->update(['product_status'=>0]);
         session()->put('message', 'Ẩn sản phẩm thành công');
         return redirect()->route('product_index');
     }
 
     public function edit($id)
     {
-       
+
         $brandes = Brand::where('brand_status',1)->get();
         $product = $this->product->find($id);
-        
+
         $htmlOption = $this->getCategory($product->category_id);
 
-        return view('admin.edit_product', compact('htmlOption','product','brandes'));
+        return view('admin.products.edit_product', compact('htmlOption','product','brandes'));
 
     }
 
@@ -138,8 +138,8 @@ class ProductController extends Controller
             $dataProductUpdate['product_image'] = $data['file_path'];
 
         }
-        $this->product->find($id)->update($dataProductUpdate);  
-        $product = $this->product->find($id);          
+        $this->product->find($id)->update($dataProductUpdate);
+        $product = $this->product->find($id);
 
     //Insert data to product images
     if($request->hasFile('image_path')){
@@ -147,17 +147,17 @@ class ProductController extends Controller
         foreach($request->image_path as $fileItem){
             $dataChitietHinhAnhProduct = $this->storageTraitUploadMutiple($fileItem,'product');
             $product->images()->create(
-                [    
+                [
                     'image_path' =>  $dataChitietHinhAnhProduct['file_path']
                 ]
             );
         }
-        
+
         session()->flash('message', 'Cập nhập sản phẩm thành công !!!');
-        return redirect()->route('product_index');   
+        return redirect()->route('product_index');
     }
 
-       
+
     }
     public function delete($id){
         try{
@@ -176,6 +176,6 @@ class ProductController extends Controller
             ], 500);
 
         }
-        
+
     }
 }

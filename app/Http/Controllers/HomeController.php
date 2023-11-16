@@ -11,10 +11,13 @@ class HomeController extends Controller
     public function index() {
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
-        return view('pages.home',compact('categorys','brandes'));
 
+        return view('client.home.home',compact('categorys','brandes'));
     }
     public function login(){
         return view('cus_login');
+    }
+    public function register(){
+        return view('cus_register');
     }
 }
