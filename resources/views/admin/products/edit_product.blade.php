@@ -27,7 +27,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
-                                <input type="file"  class="form-control"  name="product_image" id="exampleInputEmail1" >
+                                <input type="file"  class="form-control"  name="product_image" id="exampleInputEmail1"  value="{{$product->product_image}}">
                                 <div class="col-md-12">
                                     <div class="row"><img src="{{$product->product_image}}" alt="" height="100" width="100" ></div>
                                 </div>
@@ -65,7 +65,7 @@
 
                                 <select name="brand_id" class="form-control input-sm m-bot15">
                                 @foreach($brandes as $brands)
-                                @if($brands->brand_id == $product->id)
+                                @if($brands->id == $product->brand_id)
                                         <option selected value="{{$brands->id}}" name="{{$brands->id}}">{{$brands->brand_name}}</option>
                                         @else
                                         <option value="{{$brands->id}}" name="{{$brands->id}}">{{$brands->brand_name}}</option>
@@ -73,13 +73,7 @@
                                 @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Hiển thị</label>
-                                <select name="product_status" class="form-control input-sm m-bot15">
-                                    <option value="0">Ẩn</option>
-                                    <option value="1">Hiển thị</option>
-                                </select>
-                            </div>
+                            
 
                             <button type="submit" name="add_product" class="btn btn-info">Sửa sản phẩm</button>
                     </form>

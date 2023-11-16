@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
 session_start();
 
 class BrandProduct extends Controller
@@ -38,7 +40,14 @@ class BrandProduct extends Controller
         $brands =  $this->brand->latest()->paginate(5);
         return view('admin.brand.all_brand_product', compact('brands'));
     }
-
+    public function index1($id) {
+        $categorys = Category::where('parent_id',0)->get();
+        $brandes = Brand::where('brand_status',1)->get();
+        $products = Product::Where('product_status',1)->where('brand_id',$id)->latest()->paginate(12);
+        $brand_name = Brand::where('id',$id)->first();
+        return view('client.brand.list',compact('categorys','brandes','products'))->with('brand', $brand_name);
+        // return view('admin.brand.all_brand_product', compact('brands'));
+    }
     public function unactive_brand($id) {
         $this->AuthLogin();
         $data = $this->brand->where('id', $id)->update(['brand_status'=>1]);
@@ -65,12 +74,12 @@ class BrandProduct extends Controller
         return redirect()->route('brand_create');
     }
 
-    public function getBrand($parentId){
-        $data = $this->brand->all();
-        $recusive = new Recusive($data);
-        $htmlOption = $recusive->categoryRecusive($parentId);
-        return $htmlOption;
-    }
+    // public function getBrand($parentId){
+    //     $data = $this->brand->all();
+    //     $recusive = new Recusive($data);
+    //     $htmlOption = $recusive->categoryRecusive($parentId);
+    //     return $htmlOption;
+    // }
 
     public function edit($id)
     {

@@ -26,6 +26,7 @@ class ProductController extends Controller
 {
     private $category;
     private $productImage;
+    private $product;
    use StorageImageTrait;
     public function AuthLogin(){
         $admin_id = session()->get('admin_id');
@@ -130,8 +131,8 @@ class ProductController extends Controller
             'product_desc' => $request->product_desc,
             'product_content' => $request->product_content,
             'category_id' => $request->category_id,
-            'brand_id' =>$request->brand_id,
-            'product_status' => $request->product_status
+            'brand_id' =>$request->brand_id
+           
         ];
         $data = $this->storageTraitUpload($request,'product_image','product');
         if(!empty($data)){
@@ -140,6 +141,8 @@ class ProductController extends Controller
         }
         $this->product->find($id)->update($dataProductUpdate);
         $product = $this->product->find($id);
+        session()->flash('message', 'Cập nhập sản phẩm thành công !!!');
+        return redirect()->route('product_index');
 
     //Insert data to product images
     if($request->hasFile('image_path')){

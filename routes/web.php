@@ -32,7 +32,8 @@ Route::get('/logoutCustomer', [CustomerController::class, 'logout']);
 Route::get('/account',[CustomerController::class, 'account']);
 Route::get('/change-password',[CustomerController::class,'changePassword']);
 Route::post('/edit-customer',[CustomerController::class,'editCustomer']);
-Route::post('/change-password',[CustomerController::class,'change_Password']);
+Route::post('/change-password',[CustomerController::class,'saveUpdatePassword']);
+Route::get('/brand/{id}',[BrandProduct::class,'index1'])->name('get_brand');
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 

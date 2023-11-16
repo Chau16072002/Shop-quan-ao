@@ -5,9 +5,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\RequestPassword;
 session_start();
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        //var_dump(44444444444);die();
+    }
     //
     public function AuthLogin(){
         $customer_id = session()->get('cus_id');
@@ -24,7 +29,7 @@ class CustomerController extends Controller
 
         $result = DB::table('tbl_customer')
             ->where('cus_email', $customer_email)
-            ->where('cus_password', $customer_password)
+            ->where('cus_password', md5($customer_password))
             ->first();
         if ($result) {
             session()->put('cus_name', $result->cus_name);
@@ -86,29 +91,26 @@ class CustomerController extends Controller
             }
          
     }
-    //Đổi mật khẩu
-    public function changePassword(){
+      //Đổi mật khẩu
+      public function changePassword(){
+      //  var_dump(2222);die();
         $this->AuthLogin();
         return view('change_password');
     }
     // Xử lý đổi mật khẩu
-    public function change_Password(Request $request)
-    {
+    public function saveUpdatePassword(RequestPassword $request){
+        var_dump(1111);die();
         $id = session()->get('cus_id');
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|min:8|different:current_password',
-            'new_password_confirmation' => 'required|same:new_password',
-        ]);
         $edit_customer = DB::table('tbl_customer')->where('id', $id)->first();
         $password = $edit_customer->cus_password;
-        if($password == $request->current_password){
-            DB::table('tbl_customer')->where('id',$id)->update(['cus_password' => $request->new_password]);
+        if($password == md5($request->current_password)){
+            DB::table('tbl_customer')
+                ->where('id',$id)->update(['cus_password' => md5($request->new_password)]);
             return redirect('/account')->with('mesage','Mật khẩu đã được cập nhật thành công');
         }
         else{
             session()->put('message', 'Mật khẩu cũ không trùng khớp  vui lòng nhập lại');
-            return redirect('change_password');
+            return redirect('change-password');
         }
     }
     //Đăng ký thông tin khách hàng
@@ -118,7 +120,7 @@ class CustomerController extends Controller
         $data['cus_name'] = $request->customer_name;
         $data['cus_email'] = $request->customer_email;
         if($request->customer_password == $request->password_confirm){
-            $data['cus_password'] = $request->customer_password;        
+            $data['cus_password'] = md5($request->customer_password);        
         }
         else{
             session()->put('message', 'Mật khẩu nhập lại không trùng khớp');
