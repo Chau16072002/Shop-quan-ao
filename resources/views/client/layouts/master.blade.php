@@ -24,6 +24,8 @@
         <script src="{{ asset("/fontend/js/price-range.js") }}"></script>
         <script src="{{ asset("/fontend/js/jquery.prettyPhoto.js") }}"></script>
         <script src="{{ asset("/fontend/js/main.js") }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset("/fontend/js/delete.js") }}"></script>
         @yield('js')
     </body>
 </html>

@@ -9,7 +9,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SilderAdminController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,6 +44,9 @@ Route::post('/admin-dashboard', [AdminController::class, 'dashboard'])->name('ad
 
 //Category-Product
 Route::prefix('categories')->group(function () {
+    //Index
+    Route::get('/category/{id}',[CategoryController::class,'index1'])->name('get_category');
+    //Admin
     Route::get('/', [CategoryController::class, 'index'])->name('category_index');
     Route::get('/create', [CategoryController::class, 'create'])->name('category_create');
     Route::post('/store', [CategoryController::class, 'store'])->name('category_store');
@@ -73,6 +75,13 @@ Route::prefix('brands')->group(function () {
 
 //Product
 Route::prefix('products')->group(function () {
+    //Index wishlist
+    Route::get('/product/{id}', [ProductController::class, 'storeWishlist'])->name('storeWishlist');
+    Route::get('/wishlist', [ProductController::class, 'showWishlist'])->name('showWishlist');
+    Route::get('/wishlistDelete/{id}', [ProductController::class, 'wishlistDelete'])->name('wishlistDelete');
+
+
+    //Admin
     Route::get('/', [ProductController::class, 'index'])->name('product_index');
     Route::get('/create', [ProductController::class, 'create'])->name('product_create');
     Route::post('/store', [ProductController::class, 'store'])->name('product_store');

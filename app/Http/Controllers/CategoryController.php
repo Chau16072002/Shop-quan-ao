@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Brand;
+use App\Models\Product;
 session_start();
 
 
@@ -30,6 +32,14 @@ class CategoryController extends Controller
     public function create(){
         $htmlOption = $this->getCategory($parentId = '');
         return view('admin.category.add_category_product', compact('htmlOption'));
+    }
+    public function index1($id) {
+        $categorys = Category::where('parent_id',0)->get();
+        $brandes = Brand::where('brand_status',1)->get();
+        $products = Product::Where('product_status',1)->where('category_id',$id)->latest()->paginate(12);
+        $category_name = Category::where('id',$id)->first();
+        return view('client.category.list',compact('categorys','brandes','products'))->with('category', $category_name);
+        // return view('admin.brand.all_brand_product', compact('brands'));
     }
 
     public function index() {

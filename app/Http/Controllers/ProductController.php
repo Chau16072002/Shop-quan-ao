@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Http\Requests\ProductAddRequest;
+use App\Models\Wishlist;
 
 
 
@@ -27,6 +28,7 @@ class ProductController extends Controller
     private $category;
     private $productImage;
     private $product;
+    private $wishlist;
    use StorageImageTrait;
     public function AuthLogin(){
         $admin_id = session()->get('admin_id');
@@ -37,16 +39,23 @@ class ProductController extends Controller
         }
     }
 
-    public function __construct(Category $category, Product $product, ProductImage $productImage){
+    public function __construct(Category $category, Product $product, ProductImage $productImage, Wishlist $wishlist){
         $this->category = $category;
         $this->product = $product;
         $this->productImage = $productImage;
+        $this->wishlist = $wishlist;
     }
 
     public function create(){
         $htmlOption = $this->getCategory($parentId = '');
         $brandes = Brand::where('brand_status',1)->get();
         return view('admin.products.add_product',compact('brandes','htmlOption'));
+    }
+    public function index1($id) {
+       
+
+         $products =  Product::where('id',$id)->where('product_status',1)->get();
+         return view('client.wishlist.wishlist', compact('products'));
     }
     public function index() {
         $this->AuthLogin();
@@ -181,4 +190,39 @@ class ProductController extends Controller
         }
 
     }
+    public function storeWishlist($id){
+
+      $wishlist =  $this->wishlist->create([
+            'product_id' =>$id,
+        ]);
+        return redirect('/');
+        
+    }
+    public function showWishlist(){
+        $wishlist =  $this->wishlist->latest()->paginate(5);
+
+        return view('client.wishlist.wishlist',compact('wishlist'));
+    }
+
+    public function wishlistDelete($id){
+        try{
+            $this->wishlist->find($id)->delete();
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ], 200);
+
+        }catch(\Exception $exception){
+            Log::error('Message:' . $exception->getMessage(). '--- Line: '. $exception->getLine());
+            return response()->json([
+                'code' => 500,
+                'message' => 'fail'
+
+            ], 500);
+
+        }
+
+    }
+
+
 }
