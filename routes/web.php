@@ -33,6 +33,9 @@ Route::get('/change-password',[CustomerController::class,'changePassword']);
 Route::post('/edit-customer',[CustomerController::class,'editCustomer']);
 Route::post('/change-password',[CustomerController::class,'saveUpdatePassword']);
 Route::get('/brand/{id}',[BrandProduct::class,'index1'])->name('get_brand');
+Route::get('/contact-us',[HomeController::class,'contact'])->name('contact_us');
+Route::get('/detail/{id}',[ProductController::class,'ProductDetail'])->name('detail');
+Route::get('/search', [ProductController::class, 'search'])->name('search');
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 

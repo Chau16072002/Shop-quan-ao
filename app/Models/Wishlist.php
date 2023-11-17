@@ -9,7 +9,4 @@ class Wishlist extends Model
 {
     protected $fillable = ['id','product_id'];
 
-    function wishlists(){
-        return $this->belongsTo(Product::class, 'product_id');
-    }
 }

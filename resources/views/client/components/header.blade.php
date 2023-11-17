@@ -1,5 +1,7 @@
-<header id="header"><!--header-->
-    <div class="header_top"><!--header_top-->
+<header id="header">
+    <!--header-->
+    <div class="header_top">
+        <!--header_top-->
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -23,9 +25,11 @@
                 </div>
             </div>
         </div>
-    </div><!--/header_top-->
+    </div>
+    <!--/header_top-->
 
-    <div class="header-middle"><!--header-middle-->
+    <div class="header-middle">
+        <!--header-middle-->
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
@@ -66,26 +70,29 @@
                             <?php $value = session()->get('cus_name');
 								if($value != null):
 									?>
-									<li><a href="/account"><i class="fa fa-user"></i> <?php echo $value; endif;?></a></li>
-								<?php if($value == null):
+                            <li><a href="/account"><i class="fa fa-user"></i> <?php echo $value; endif;?></a></li>
+                            <?php if($value == null):
 									?>
-									<li><a href="dang-nhap"><i class="fa fa-lock"></i> <?php echo "Login"; endif;?></a></li>
-									<?php if($value != null):?>
-										<li><a href="{{ URL::to('/logoutCustomer') }}"><i class="fa fa-unlock"></i> Logout</a></li>
-								<?php endif;?>
+                            <li><a href="dang-nhap"><i class="fa fa-lock"></i> <?php echo "Login"; endif;?></a></li>
+                            <?php if($value != null):?>
+                            <li><a href="{{ URL::to('/logoutCustomer') }}"><i class="fa fa-unlock"></i> Logout</a></li>
+                            <?php endif;?>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </div><!--/header-middle-->
+    </div>
+    <!--/header-middle-->
 
-    <div class="header-bottom"><!--header-bottom-->
+    <div class="header-bottom">
+        <!--header-bottom-->
         <div class="container">
             <div class="row">
                 <div class="col-sm-9">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target=".navbar-collapse">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -111,16 +118,19 @@
                                 </ul>
                             </li>
                             <li><a href="404.html">404</a></li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            <li><a href="{{route('contact_us')}}">Contact</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <div class="search_box pull-right">
-                        <input type="text" placeholder="Search"/>
-                    </div>
+                    <form action="{{ route('search') }}" method="get">
+                        <input type="text" name="keyword" placeholder="Nhập từ khoá">
+                        <button type="submit">Search</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div><!--/header-bottom-->
-</header><!--/header-->
+    </div>
+    <!--/header-bottom-->
+</header>
+<!--/header-->

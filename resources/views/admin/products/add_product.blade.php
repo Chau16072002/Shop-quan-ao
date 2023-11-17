@@ -57,7 +57,7 @@
                             <label for="exampleInputEmail1">Hình ảnh chi tiết</label>
                             <input type="file" multiple
                                 class="form-control-file " name="image_path[]"
-                                id="exampleInputEmail1" ">
+                                id="exampleInputEmail1"     >
 
                         </div>
                         <div class="form-group">

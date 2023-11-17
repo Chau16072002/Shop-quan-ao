@@ -21,4 +21,7 @@ class HomeController extends Controller
     public function register(){
         return view('cus_register');
     }
+    public function contact(){
+        return view('contact-us');
+    }
 }

@@ -86,7 +86,6 @@ class ProductController extends Controller
             }
             $product = $this->product->create($dataProduct);
             session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
-            return redirect()->route('product_create');
 
         //Insert data to product images
         if($request->hasFile('image_path')){
@@ -151,7 +150,7 @@ class ProductController extends Controller
         $this->product->find($id)->update($dataProductUpdate);
         $product = $this->product->find($id);
         session()->flash('message', 'Cập nhập sản phẩm thành công !!!');
-        return redirect()->route('product_index');
+
 
     //Insert data to product images
     if($request->hasFile('image_path')){
@@ -223,6 +222,24 @@ class ProductController extends Controller
         }
 
     }
+    public function ProductDetail($id){
+        $product = Product::where('id',$id)->get();
+        $categorys = Category::where('parent_id',0)->get();
+        $brandes = Brand::where('brand_status',1)->get();
+        return view('client.detail.detail',compact('product','categorys','brandes'));
+    }
 
+
+    //search
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $products =  $this->product->where('product_name', 'like', '%' . $keyword . '%')
+                           ->orWhere('product_desc', 'like', '%' . $keyword . '%')
+                           ->get();
+                           $categorys = Category::where('parent_id',0)->get();
+        $brandes = Brand::where('brand_status',1)->get();
+        return view('/search', compact('products','categorys','brandes'));
+    }
 
 }
