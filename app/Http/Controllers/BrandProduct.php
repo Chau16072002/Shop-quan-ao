@@ -43,7 +43,7 @@ class BrandProduct extends Controller
     public function index1($id) {
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
-        $products = Product::Where('product_status',1)->where('brand_id',$id)->latest()->paginate(12);
+        $products = Product::Where('product_status',1)->where('brand_id',$id)->latest()->paginate(3);
         $brand_name = Brand::where('id',$id)->first();
         return view('client.brand.list',compact('categorys','brandes','products'))->with('brand', $brand_name);
         // return view('admin.brand.all_brand_product', compact('brands'));
