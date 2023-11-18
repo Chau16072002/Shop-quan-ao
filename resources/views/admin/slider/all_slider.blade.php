@@ -79,7 +79,7 @@
             </span></td>
 
               <td>
-                <a href="" class="active styling-edit" ui-toggle-class="">
+                <a href="{{ route('slider_edit', ['id' => $slider->id]) }}" class="active styling-edit" ui-toggle-class="">
                     <i class="fa fa-pencil-square-o text-success text-active"></i>
                 </a>
                 <a onclick="return confirm('Bạn có chắc là muốn xóa danh mục này không?')" href="{{ route('slider_delete', ['id' => $slider->id]) }}" class="active styling-edit" ui-toggle-class="">

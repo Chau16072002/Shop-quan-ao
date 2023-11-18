@@ -18,14 +18,14 @@
                         <form role="form" action="{{ route('slider_store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
-                            <label for="exampleInputEmail1">Tên danh mục</label>
+                            <label for="exampleInputEmail1">Tên slider</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="" placeholder="Nhập tên" value="{{ old('name') }}">
                             @error('name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Mô tả danh mục</label>
+                                <label for="exampleInputPassword1">Mô tả slider</label>
                                 <textarea style="resize: none" rows="8" class="form-control @error('description') is-invalid @enderror" name="description" id="" placeholder="Nhập mô tả">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="alert alert-danger">{{ $message }}</div>

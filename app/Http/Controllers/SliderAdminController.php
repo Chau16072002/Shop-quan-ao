@@ -72,6 +72,36 @@ class SliderAdminController extends Controller
         session()->put('message', 'Ẩn slider thành công');
         return redirect()->route('slider_index');
     }
+
+    public function edit($id){
+        $slider = $this->slider->find($id);
+
+        return view('admin.slider.edit_slider', compact('slider'));
+    }
+
+    public function update(Request $request, $id){
+        $this->AuthLogin();
+        try {
+            $dataUpdate = [
+                'name' => $request->name,
+                'description' => $request->description
+            ];
+
+            $dataImageSlider = $this->storageTraitUpload($request, 'image_path', 'slider');
+
+            if(!empty($dataImageSlider)){
+                $dataInsert['image_name'] = $dataImageSlider['file_name'];
+                $dataInsert['image_path'] = $dataImageSlider['file_path'];
+            }
+
+            $this->slider->find($id)->update($dataUpdate);
+            return redirect()->route('slider_index');
+        } catch (\Exception $ex) {
+            Log::error("Loi: " . $ex->getMessage() . "--Line: " . $ex->getLine());
+        }
+
+    }
+
     public function delete($id){
         $this->slider->find($id)->delete();
         session()->flash('message', 'Xóa slider sản phẩm thành công !!!');
