@@ -7,7 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\SilderAdminController;
+use App\Http\Controllers\SliderAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,14 +99,14 @@ Route::prefix('products')->group(function () {
 
 //Slider
 Route::prefix('slider')->group(function () {
-    Route::get('/', [SilderAdminController::class, 'index'])->name('slider_index');
-    Route::get('/create', [SilderAdminController::class, 'create'])->name('slider_create');
-    Route::post('/store', [SilderAdminController::class, 'store'])->name('slider_store');
+    Route::get('/', [SliderAdminController::class, 'index'])->name('slider_index');
+    Route::get('/create', [SliderAdminController::class, 'create'])->name('slider_create');
+    Route::post('/store', [SliderAdminController::class, 'store'])->name('slider_store');
 
-    Route::get('/unactive-slider/{id}', [SilderAdminController::class, 'unactive_slider'])->name('unactive_slider');
-    Route::get('/active-slider/{id}', [SilderAdminController::class, 'active_slider'])->name('active_slider');
+    Route::get('/unactive-slider/{id}', [SliderAdminController::class, 'unactive_slider'])->name('unactive_slider');
+    Route::get('/active-slider/{id}', [SliderAdminController::class, 'active_slider'])->name('active_slider');
 
-    Route::get('/edit/{id}', [SilderAdminController::class, 'edit'])->name('slider_edit');
-    Route::post('/update/{id}', [SilderAdminController::class, 'update'])->name('slider_update');
-    Route::get('/delete/{id}', [SilderAdminController::class, 'delete'])->name('slider_delete');
+    Route::get('/edit/{id}', [SliderAdminController::class, 'edit'])->name('slider_edit');
+    Route::post('/update/{id}', [SliderAdminController::class, 'update'])->name('slider_update');
+    Route::get('/delete/{id}', [SliderAdminController::class, 'delete'])->name('slider_delete');
 });

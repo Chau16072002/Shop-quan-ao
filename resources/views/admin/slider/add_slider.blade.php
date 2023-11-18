@@ -41,7 +41,7 @@
 
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Hiển thị</label>
-                                <select name="category_status" class="form-control input-sm m-bot15">
+                                <select name="slider_status" class="form-control input-sm m-bot15">
                                     <option value="0">Ẩn</option>
                                     <option value="1">Hiển thị</option>
                                 </select>

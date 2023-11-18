@@ -1,4 +1,8 @@
 @extends('admin.layouts.admin_layout')
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('/backend/slider/slider.css') }}">
+@endsection
 @section('admin_content')
 <div class="table-agile-info">
     <div class="panel panel-default">
@@ -51,27 +55,39 @@
             </tr>
           </thead>
           <tbody>
-            {{-- @foreach ($categories as $category) --}}
+            @foreach ($sliders as $slider)
             <tr>
               <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-              <td>Ten</td>
-              <td>Description</td>
-              <td></td>
+              <td>{{ $slider->name }}</td>
+              <td>{{ $slider->description }}</td>
+              <td>
+                <img class="image_slider_150_100" src="{{ $slider->image_path }}" alt="">
+              </td>
 
               <td><span class="text-ellipsis">
-                {{--  --}}
+                <?php
+                    if ($slider->slider_status==0){
+                ?>
+                    <a href="{{ route('unactive_slider', ['id' =>$slider->id]) }}"><span class="fa-thumbs-styling fa fa-thumbs-down"></span></a>
+                <?php
+                    }else {
+                ?>
+                    <a href="{{ route('active_slider', ['id' =>$slider->id]) }}"><span class="fa-thumbs-styling fa fa-thumbs-up"></span></a>
+                <?php
+                    }
+                ?>
             </span></td>
 
               <td>
                 <a href="" class="active styling-edit" ui-toggle-class="">
                     <i class="fa fa-pencil-square-o text-success text-active"></i>
                 </a>
-                <a onclick="return confirm('Bạn có chắc là muốn xóa danh mục này không?')" href="" class="active styling-edit" ui-toggle-class="">
+                <a onclick="return confirm('Bạn có chắc là muốn xóa danh mục này không?')" href="{{ route('slider_delete', ['id' => $slider->id]) }}" class="active styling-edit" ui-toggle-class="">
                     <i class="fa fa-times text-danger text"></i>
                 </a>
               </td>
             </tr>
-            {{-- @endforeach --}}
+            @endforeach
           </tbody>
         </table>
       </div>
@@ -83,7 +99,7 @@
           </div>
           <div class="col-sm-7 text-right text-center-xs">
             <ul class="pagination pagination-sm m-t-none m-b-none">
-                {{-- {{ $categories->links() }} --}}
+                {{ $sliders->links() }}
             </ul>
           </div>
         </div>

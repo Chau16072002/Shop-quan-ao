@@ -52,7 +52,7 @@ class ProductController extends Controller
         return view('admin.products.add_product',compact('brandes','htmlOption'));
     }
     public function index1($id) {
-       
+
 
          $products =  Product::where('id',$id)->where('product_status',1)->get();
          return view('client.wishlist.wishlist', compact('products'));
@@ -140,7 +140,7 @@ class ProductController extends Controller
             'product_content' => $request->product_content,
             'category_id' => $request->category_id,
             'brand_id' =>$request->brand_id
-           
+
         ];
         $data = $this->storageTraitUpload($request,'product_image','product');
         if(!empty($data)){
@@ -195,7 +195,7 @@ class ProductController extends Controller
             'product_id' =>$id,
         ]);
         return redirect('/');
-        
+
     }
     public function showWishlist(){
         $wishlist =  $this->wishlist->latest()->paginate(5);
@@ -226,7 +226,14 @@ class ProductController extends Controller
         $product = Product::where('id',$id)->get();
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
-        return view('client.detail.detail',compact('product','categorys','brandes'));
+        foreach($product as $relativeProduct){
+            $category_id = $relativeProduct->category_id;
+
+        }
+        $relativeProducts = Product::where('category_id',$category_id)->whereNotIn('id',[$id])->get();
+
+
+        return view('client.detail.detail',compact('product','categorys','brandes','relativeProducts'));
     }
 
 

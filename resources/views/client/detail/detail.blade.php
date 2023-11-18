@@ -83,6 +83,7 @@
 
 				<div class="col-sm-9 padding-right">
 				<div class="product-details"><!--product-details-->
+
 					@foreach($product as $pro)
 						<div class="col-sm-5">
 							<div class="view-product">
@@ -90,14 +91,14 @@
 								<h3>ZOOM</h3>
 							</div>
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
-								
+
 								  <!-- Wrapper for slides -->
 								    <div class="carousel-inner">
 									<div class="item active" style=" height:60px; display: inline-block;">
 									@foreach($pro->images as $ImageItem)
                                     <img style="width: 60px;" src="{{$ImageItem->image_path}}" alt="">
 									@endforeach
-                                    
+
 
 
 
@@ -139,12 +140,46 @@
 						@endforeach
 					</div><!--/product-details-->
 
-				
 
-					
+
+
 
 				</div>
 			</div>
+            <div class="recommended_items"><!--recommended_items-->
+                <h2 class="title text-center">recommended items</h2>
+
+                <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            @foreach ($relativeProducts as $relative )
+
+
+                            <div class="col-sm-4">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <img src="{{$relative->product_image}}" alt="" />
+                                            <h2>{{$relative->product_price}}</h2>
+                                            <p>{{$relative->product_name}}</p>
+                                            <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+
+                        </div>
+                    </div>
+                     <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                      </a>
+                      <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                      </a>
+                </div>
+            </div><!--/recommended_items-->
 		</div>
 	</section>
 @endsection

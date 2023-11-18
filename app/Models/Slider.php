@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Slider extends Model
 {
 
-    protected $fillable = ['id', 'name', 'description', 'image_path', 'image_name'];
+    protected $guarded = [];
 }

@@ -26,6 +26,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset("/backend/js/raphael-min.js") }}"></script>
 <script src="{{ asset("/backend/js/morris.js") }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@yield('css')
 </head>
 <body>
 <section id="container">
@@ -44,6 +45,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </section>
 <!--main content end-->
 </section>
+@yield('js')
 <script src="{{ asset("/backend/js/bootstrap.js") }}"></script>
 <script src="{{ asset("/backend/js/jquery.dcjqaccordion.2.7.js") }}"></script>
 <script src="{{ asset("/backend/js/scripts.js") }}"></script>
@@ -53,7 +55,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset("/backend/js/jquery.scrollTo.js") }}"></script>
 <script>
 	function actionDelete(event){
-		event.preventDefault();	
+		event.preventDefault();
 		let urlRequest = $(this).data('url');
 		let that = $(this);
 		Swal.fire({
@@ -83,7 +85,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		}
   });
-    
+
   }
 });
 	}
