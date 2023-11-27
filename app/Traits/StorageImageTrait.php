@@ -9,8 +9,8 @@ trait StorageImageTrait{
             $file = $request->$fieldName;
             $fileNameOrigin = $file->getClientOriginalName();
             $fileNameHash = Str::random(20). '.' . $file->getClientOriginalExtension();
-
-
+            
+    
             $filepath = $request->file($fieldName)->storeAs('public/'. $folderName, $fileNameHash);
             $dataUploadTrait = [
                 'file_name' => $fileNameOrigin,
@@ -22,13 +22,13 @@ trait StorageImageTrait{
     }
     public function storageTraitUploadMutiple($file, $folderName){
             $fileNameOrigin = $file->getClientOriginalName();
-            $fileNameHash = Str::random(20). '.' . $file->getClientOriginalExtension();
+            $fileNameHash = Str::random(20). '.' . $file->getClientOriginalExtension();       
             $filepath = $file->storeAs('public/'. $folderName, $fileNameHash);
             $dataUploadTrait = [
                 'file_name' => $fileNameOrigin,
                 'file_path' => Storage::url($filepath)
             ];
             return $dataUploadTrait;
-
+       
         }
 }

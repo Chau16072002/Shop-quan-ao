@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SliderAdminController;
 
 /*
@@ -36,6 +37,7 @@ Route::get('/brand/{id}',[BrandProduct::class,'index1'])->name('get_brand');
 Route::get('/contact-us',[HomeController::class,'contact'])->name('contact_us');
 Route::get('/detail/{id}',[ProductController::class,'ProductDetail'])->name('detail');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
+Route::post('/contact',[ContactController::class,'sendContact']);
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 

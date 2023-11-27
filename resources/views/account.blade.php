@@ -15,13 +15,15 @@
     <div class="container">
         <H1>Hồ sơ của tôi</H1>
         <H4>Quản lý thông tin hồ sơ để bảo mật tài khoản</H4>
+        <?php
         $message = Session::get('message');
     if ($message){
         echo '<span style="color: red";ß class="text-alert">'. $message .'</span>';
         session()->put('message', null);
     }
+    ?>
         <div class="position-center">
-            <form role="form" action="{{ URL::to('/edit-customer') }}" method="post">
+            <form role="form" action="{{ URL::to('/edit-customer') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
 				<div class="row">
 					<div class="col-md-9">
@@ -41,7 +43,11 @@
 					</div>
 					 <div class="col-md-3">
 						<div>
+                            <?php if($account->cus_image == null){ ?>
 						<label for="exampleInputEmail1"><i style="font-size: 20em;" class="fa fa-user"></i></label>
+                        <?php } if($account->cus_image != null):?>
+                            <img style="width: 300px; height: 300px;" src="{{ $account->cus_image }}" alt="avata">
+                        <?php endif; ?>
                                 <input type="file" class="form-control" name="cus_image" id="exampleInputEmail1">
 						</div>
 					 </div>
