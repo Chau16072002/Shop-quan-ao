@@ -37,7 +37,7 @@ Route::get('/brand/{id}',[BrandProduct::class,'index1'])->name('get_brand');
 Route::get('/contact-us',[HomeController::class,'contact'])->name('contact_us');
 Route::get('/detail/{id}',[ProductController::class,'ProductDetail'])->name('detail');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
-Route::post('/contact',[ContactController::class,'sendContact']);
+Route::get('/contactt-us',[ContactController::class,'sendContact']);
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 
@@ -111,4 +111,21 @@ Route::prefix('slider')->group(function () {
     Route::get('/edit/{id}', [SliderAdminController::class, 'edit'])->name('slider_edit');
     Route::post('/update/{id}', [SliderAdminController::class, 'update'])->name('slider_update');
     Route::get('/delete/{id}', [SliderAdminController::class, 'delete'])->name('slider_delete');
+});
+//Customer
+Route::prefix('customer')->group(function () {
+    Route::get('/', [CustomerController::class, 'index'])->name('customer_index');
+
+
+    Route::get('/unactive-slider/{id}', [SliderAdminController::class, 'unactive_slider'])->name('unactive_slider');
+    Route::get('/active-slider/{id}', [SliderAdminController::class, 'active_slider'])->name('active_slider');
+
+    Route::get('/edit/{id}', [SliderAdminController::class, 'edit'])->name('slider_edit');
+    Route::post('/update/{id}', [SliderAdminController::class, 'update'])->name('slider_update');
+    Route::get('/delete/{id}', [SliderAdminController::class, 'delete'])->name('slider_delete');
+});
+//Contact
+Route::prefix('contact')->group(function () {
+    Route::get('/', [ContactController::class, 'index'])->name('contact_index');
+    Route::get('/delete/{id}', [ContactController::class, 'delete'])->name('contact_delete');
 });

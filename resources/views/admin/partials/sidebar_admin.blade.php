@@ -53,6 +53,25 @@
 						<li><a href="{{ route('slider_index') }}">Liệt kê slider</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Customer</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{ route('customer_index') }}">Liệt kê Customer</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Contact</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{ route('contact_index') }}">Liệt kê Contact</a></li>
+                    </ul>
+                </li>
+
 
             </ul>            </div>
         <!-- sidebar menu end-->

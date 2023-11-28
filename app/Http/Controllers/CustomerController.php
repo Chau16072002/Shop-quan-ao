@@ -40,7 +40,7 @@ class CustomerController extends Controller
         if ($result) {
             session()->put('cus_name', $result->cus_name);
             session()->put('cus_id', $result->id);
-            
+            session()->put('cus_email', $result->cus_email);
             return redirect('/');
         } else {
             session()->flash('message', 'Tài khoản hoặc Mật khẩu bị sai. Làm ơn nhập lại!!!');

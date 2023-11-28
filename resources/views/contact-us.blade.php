@@ -14,24 +14,48 @@
 @section('content')
 	 <div id="contact-page" class="container">
     	<div class="bg">
-	    		
+		<?php
+        $message = Session::get('message');
+    if ($message){
+        echo '<span style="color: red";ß class="text-alert">'. $message .'</span>';
+        session()->put('message', null);
+    }
+    ?>
     		<div class="row">  	
 	    		<div class="col-sm-8">
 	    			<div class="contact-form">
 	    				<h2 class="title text-center">Get In Touch</h2>
 	    				<div class="status alert alert-success" style="display: none"></div>
-				    	<form id="main-contact-form" method="post" action="{{ URL::to('/contact') }}">
-				            <div class="form-group col-md-6">
-				                <input type="text" name="name" class="form-control" required="required" placeholder="Name">
+				    	<form action="{{ URL::to('/contactt-us') }}" method="get">
+							<?php
+							$value = session()->get('cus_name');
+							$value1 = session()->get('cus_email');
+							 if($value != null):
+							?>
+							<div class="form-group col-md-6">
+				                <input type="text" class="form-control" value="<?php echo $value ?>" name="con_name" disabled>
 				            </div>
 				            <div class="form-group col-md-6">
-				                <input type="email" name="email" class="form-control" required="required" placeholder="Email">
+				                <input type="text" class="form-control" value="<?php echo $value1 ?>" name="con_email"  disabled>
+				            </div>
+							<?php endif;
+							?>
+							<?php
+							 if($value == null):
+							?>
+							 <div class="form-group col-md-6">
+				                <input type="text" class="form-control" name="con_name" required="required" placeholder="Name">
+				            </div>
+				            <div class="form-group col-md-6">
+				                <input type="email" class="form-control" name="con_email" required="required" placeholder="Email">
+				            </div>
+							<?php endif;
+							?>
+				            <div class="form-group col-md-12">
+				                <input type="text" class="form-control" name="con_subject" required="required" placeholder="Subject">
 				            </div>
 				            <div class="form-group col-md-12">
-				                <input type="text" name="subject" class="form-control" required="required" placeholder="Subject">
-				            </div>
-				            <div class="form-group col-md-12">
-				                <textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="Your Message Here"></textarea>
+				                <textarea name="con_message" id="message" required="required" class="form-control" rows="8" placeholder="Your Message Here"></textarea>
 				            </div>                        
 				            <div class="form-group col-md-12">
 				                <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
