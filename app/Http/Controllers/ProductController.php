@@ -189,16 +189,34 @@ class ProductController extends Controller
         }
 
     }
-    public function storeWishlist($id){
+    public function storeWishlist($id) {
+        $customerId = session()->get('cus_id');
+    
+        $wishlist1 = Wishlist::where('product_id', $id)->get();
+        //dd($wishlist1->isEmpty());
+        if ($wishlist1->isEmpty() == true) {
+            $wishlist = $this->wishlist->create([
+                'product_id' => $id,
+                'customer_id' => $customerId
+            ]);
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ], 200);
+          
+    
+        } else {
+            // Nếu wishlist đã tồn tại, bạn có thể xử lý thông báo ở đây
+            return response()->json([
+                'code' => 500,
+                'message' => 'fail'
 
-      $wishlist =  $this->wishlist->create([
-            'product_id' =>$id,
-        ]);
-        return redirect('/');
-
+            ], 500);
+    
+        }
     }
     public function showWishlist(){
-        $wishlist =  $this->wishlist->latest()->paginate(5);
+        $wishlist =  Wishlist::where('customer_id',session()->get('cus_id'))->get();
 
         return view('client.wishlist.wishlist',compact('wishlist'));
     }

@@ -74,11 +74,11 @@
                             </span></td>
 
                         <td>
-                            <a href="{{route('brand_edit',['id' =>$brand_pro->id]) }}" class="active styling-edit" ui-toggle-class="">
+                            <a href="{{route('brand_edit',['id' =>$brand_pro->id]) }}" data-url="" class="active styling-edit" ui-toggle-class="">
                                 <i class="fa fa-pencil-square-o text-success text-active"></i>
                             </a>
-                            <a onclick="return confirm('Bạn có chắc là muốn xóa thương hiệu này không?')" href="{{route('brand_delete',['id' =>$brand_pro->id]) }}"
-                                class="active styling-edit" ui-toggle-class="">
+                            <a  data-url="{{route('brand_delete',['id' =>$brand_pro->id]) }}" 
+                                class="active styling-edit action_delete2" ui-toggle-class="">
                                 <i class="fa fa-times text-danger text"></i>
                             </a>
                         </td>

@@ -106,8 +106,17 @@
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li><a href="{{route('storeWishlist',['id' => $pro->id])}}"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+									<?php $value = session()->get('cus_id');
+								if($value != null):?>
+										
+										<li><a  data-url="{{ route('storeWishlist', ['id' =>$pro->id]) }}" class="action_wishlist" ><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
 										<li><a onclick="#" href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
+										
+								<?php
+								endif; if($value == null):?>
+										<li><a href="/dang-nhap"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+										<li><a onclick="/dang-nhap" href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
+								<?php endif; ?>
 									</ul>
 								</div>
 							</div>

@@ -43,9 +43,31 @@ class BrandProduct extends Controller
     public function index1($id) {
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
-        $products = Product::Where('product_status',1)->where('brand_id',$id)->latest()->paginate(3);
+        //$products = Product::Where('product_status',1)->where('brand_id',$id)->latest()->paginate(3);
         $brand_name = Brand::where('id',$id)->first();
-        return view('client.brand.list',compact('categorys','brandes','products'))->with('brand', $brand_name);
+
+        if(isset($_GET['sort_by'])){
+            $sort_by = $_GET['sort_by'];
+            if($sort_by == 'giam_dan'){
+                $products = Product::with('brand')->where('brand_id',$id)->where('product_status',1)->orderBy('product_price','DESC')->paginate(6)->appends(request()->query());
+            }elseif($sort_by == 'tang_dan'){
+                $products = Product::with('brand')->where('brand_id',$id)->where('product_status',1)->orderBy('product_price','ASC')->paginate(6)->appends(request()->query());
+            }
+            elseif($sort_by == 'kytu_za'){
+                $products = Product::with('brand')->where('brand_id',$id)->where('product_status',1)->orderBy('product_name','DESC')->paginate(6)->appends(request()->query());
+            }elseif($sort_by == 'kytu_az'){
+                $products = Product::with('brand')->where('brand_id',$id)->where('product_status',1)->orderBy('product_name','ASC')->paginate(6)->appends(request()->query());
+            }        
+           
+        }else{
+            $products = Product::Where('product_status',1)->where('brand_id',$id)->orderBy('id','DESC')->paginate(3);
+        }
+
+
+
+
+
+         return view('client.brand.list',compact('categorys','brandes',))->with('brand', $brand_name)->with('products',$products);
         // return view('admin.brand.all_brand_product', compact('brands'));
     }
     public function unactive_brand($id) {
@@ -100,7 +122,22 @@ class BrandProduct extends Controller
     }
 
     public function delete($id){
-        $this->brand->find($id)->delete();
-        return redirect()->route('brand_index');
+        $product = Product::where('brand_id',$id)->get();
+         if($product->isEmpty() == true)
+         {
+             $this->brand->find($id)->delete();
+             return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ], 200);
+         }
+         else{
+            return response()->json([
+                'code' => 500,
+                'message' => 'fail'
+
+            ], 500);
+         }
+        
     }
 }

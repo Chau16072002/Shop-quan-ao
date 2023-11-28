@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wishlist extends Model
 {
-    protected $fillable = ['id','product_id'];
+    protected $fillable = ['id','product_id','customer_id'];
     function wishlists(){
 
         return $this->belongsTo(Product::class, 'product_id');

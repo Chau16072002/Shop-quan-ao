@@ -85,13 +85,28 @@
 					<div class="features_items"><!--features_items-->
                     
 						<h2 class="title text-center">{{ $brand->brand_name }}</h2>
+						<div class="col-md-4">
+								<label for="amount">Sap xep theo</label>
+								<form>
+									@csrf
+									<select name="sort" id="sort" class="form-control">
+										<option value="{{Request::url()}}?sort_by=none">Loc</option>
+										<option value="{{Request::url()}}?sort_by=tang_dan">Gia tang dan</option>
+										<option value="{{Request::url()}}?sort_by=giam_dan">Gia giam dan</option>
+										<option value="{{Request::url()}}?sort_by=kytu_az">A den Z</option>
+										<option value="{{Request::url()}}?sort_by=kytu_za">Z den A</option>
+										</select>
+									</form>
+
+							</div>
+						</div>
 						@foreach($products as $pro)
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
 								<div class="single-products">
 										<div class="productinfo text-center">
 											<img src="{{$pro->product_image }}" alt="" />
-											<h2>{{$pro->product_price}}</h2>
+											<h2>{{number_format($pro->product_price,0,',','.').' '.'VNĐ'}}</h2>
 											<p>{{$pro->product_name}}</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>

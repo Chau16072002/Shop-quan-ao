@@ -53,6 +53,55 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset("/backend/js/jquery.nicescroll.js") }}"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{ asset("/backend/js/jquery.scrollTo.js") }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script>
+	function actionDelete2(event){
+		event.preventDefault();
+		let urlRequest = $(this).data('url');
+		let that = $(this);
+		Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+	$.ajax({
+		type: 'GET',
+		url: urlRequest,
+		success:function(data){
+			if(data.code == 200){
+				that.parent().parent().remove();
+				Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success"
+    });
+			}
+		},
+		error:function(data){
+			Swal.fire({
+  icon: "error",
+  title: "Oops...",
+  text: "Van con san pham su dung thuong hieu nay",
+});
+		}
+  });
+
+  }
+});
+	}
+
+
+	$( function(){
+    $(document).on('click','.action_delete2', actionDelete2);
+});
+</script>
 <script>
 	function actionDelete(event){
 		event.preventDefault();
