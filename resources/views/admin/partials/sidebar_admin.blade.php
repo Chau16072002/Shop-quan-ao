@@ -65,6 +65,16 @@
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-book"></i>
+                        <span>Admin</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{ route('admin_create') }}">Thêm admin</a></li>
+						<li><a href="{{ route('all_admin') }}">Liệt kê admin</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
                         <span>Contact</span>
                     </a>
                     <ul class="sub">

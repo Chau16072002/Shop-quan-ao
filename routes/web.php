@@ -124,6 +124,20 @@ Route::prefix('customer')->group(function () {
     Route::post('/update/{id}', [SliderAdminController::class, 'update'])->name('slider_update');
     Route::get('/delete/{id}', [SliderAdminController::class, 'delete'])->name('slider_delete');
 });
+//Admin
+Route::prefix('admins')->group(function () {
+    Route::get('/all_admin', [AdminController::class, 'ShowAllAdmins'])->name('all_admin');
+    Route::get('/admin_create', [AdminController::class, 'Admincreate'])->name('admin_create');
+    Route::post('/post.add_admin', [AdminController::class, 'storeAdmin'])->name('post.add_admin');
+    Route::get('/edit/{id}', [AdminController::class, 'editAdmin'])->name('admin_edit');
+    Route::post('/update/{id}', [AdminController::class, 'updateAdmin'])->name('admin_update');
+    Route::get('/delete/{id}', [AdminController::class, 'deleteAdmin'])->name('admin_delete');
+});
+//Cart
+Route::post('/update_cart_qty', [CartController::class, 'update_cart_qty'])->name('update_cart_qty');
+Route::post('/cart', [CartController::class, 'save_cart'])->name('cart_store');
+Route::get('/show_cart', [CartController::class, 'show_cart'])->name('show_cart');
+Route::get('/delete_cart/{rowId}', [CartController::class, 'delete_cart'])->name('delete_cart');
 //Contact
 Route::prefix('contact')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('contact_index');
