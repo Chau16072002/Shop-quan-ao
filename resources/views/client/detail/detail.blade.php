@@ -122,15 +122,19 @@
 								<h2>{{$pro->product_name}}</h2>
 								<p>Web ID: {{$pro->id}}</p>
 								<img src="images/product-details/rating.png" alt="" />
+                                <form action="{{ route('cart_store') }}" method="POST">
+                                @csrf
 								<span>
 									<span>{{$pro->product_price}}</span>
 									<label>Quantity:</label>
-									<input type="text" value="3" />
-									<button type="button" class="btn btn-fefault cart">
+									<input name="qty" type="number" value="1" />
+                                    <input name="productid_hidden" type="hidden" value="{{$pro->id}}" />
+									<button type="submit" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
 									</button>
 								</span>
+                                </form>
 								<p><b>Availability:</b> In Stock</p>
 								<p><b>Category:</b> {{$pro->category->category_name}}</p>
 								<p><b>Brand:</b>{{$pro->brand->brand_name}}</p>

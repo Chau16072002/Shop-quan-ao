@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SliderAdminController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
