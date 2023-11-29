@@ -88,30 +88,31 @@
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
 								<div class="single-products">
-									<a href="{{route('detail',['id' => $pro->id])}}">
 									<div class="productinfo text-center">
+                                        <form>
+                                            @csrf
+                                            <input type="hidden" value="{{ $pro->id }}" class="cart_product_id_{{ $pro->id }}">
+                                            <input type="hidden" value="{{ $pro->product_name }}" class="cart_product_name_{{ $pro->id }}">
+                                            <input type="hidden" value="{{ $pro->product_image }}" class="cart_product_image_{{ $pro->id }}">
+                                            <input type="hidden" value="{{ $pro->product_price }}" class="cart_product_price_{{ $pro->id }}">
+                                            <input type="hidden" value="1" class="cart_product_qty_{{ $pro->id }}">
+                                        <a href="{{route('detail',['id' => $pro->id])}}">
 											<img src="{{$pro->product_image }}" alt="" />
-											<h2>{{$pro->product_price}}</h2>
+											<h2>{{number_format($pro->product_price). ' '.'VND'}}</h2>
 											<p>{{$pro->product_name}}</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-										<!-- <div class="product-overlay">
-											<div class="overlay-content">
-												<h2>{{$pro->product_price}}</h2>
-												<p>{{$pro->product_name}}</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-										</div> -->
-									</a>
+                                        </a>
+                                        <button type="button" class="btn btn-default add-to-cart" name="add-to-cart" data-id_product="{{ $pro->id }}">Thêm giỏ hàng</button>
+                                        </form>
+                                    </div>
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
 									<?php $value = session()->get('cus_id');
 								if($value != null):?>
-										
+
 										<li><a  data-url="{{ route('storeWishlist', ['id' =>$pro->id]) }}" class="action_wishlist" ><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
 										<li><a onclick="#" href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
-										
+
 								<?php
 								endif; if($value == null):?>
 										<li><a href="/dang-nhap"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
