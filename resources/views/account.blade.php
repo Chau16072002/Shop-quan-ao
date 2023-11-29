@@ -29,16 +29,16 @@
 					<div class="col-md-9">
 					<div class="form-group">
                     <label for="exampleInputEmail1">Tên</label>
-                    <input type="text" class="form-control" value="{{ $account->cus_name }}" name="cus_name" id="exampleInputEmail1">
+                    <input type="text" class="form-control" value="{{ $account->cus_name }}" name="cus_name" required ="" id="exampleInputEmail1">
                     <label for="exampleInputEmail1">Email</label>
-                    <input type="text" class="form-control" value="{{ $account->cus_email }}" name="cus_email" id="exampleInputEmail1">
+                    <input type="email" class="form-control" value="{{ $account->cus_email }}" name="cus_email" required ="" id="exampleInputEmail1">
                     <label for="exampleInputEmail1">Số điện thoại</label>
-                    <input type="text" class="form-control" value="{{ $account->cus_phone }}" name="cus_phone" id="exampleInputEmail1">
+                    <input type="text" class="form-control" value="{{ $account->cus_phone }}" name="cus_phone" required ="" id="exampleInputEmail1">
                     <label  for="Passwrd">Mật khẩu</label><br>
 					<input type="hidden" class="form-control" value="{{ $account->cus_password }}" name="cus_password" id="exampleInputEmail1">
                     ******** <a href="/change-password">Đổi mật khẩu</a><br>
                     <label for="exampleInputEmail1">địa chỉ</label>
-                    <input type="text" class="form-control" value="{{ $account->cus_address }}" name="cus_address" id="exampleInputEmail1">
+                    <input type="text" class="form-control" value="{{ $account->cus_address }}" name="cus_address" required ="" id="exampleInputEmail1">
                 </div>
 					</div>
 					 <div class="col-md-3">

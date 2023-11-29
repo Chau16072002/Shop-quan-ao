@@ -35,7 +35,7 @@ class RequestPassword extends FormRequest
         'current_password.required' => 'Trường này không được để trống',
         'new_password.required' => 'Trường này không được để trống',
         'new_password_confirmation.required' => 'Trường này không được để trống',
-        'new_password_confirmation.same' => 'Mậ khẩu nhập lại không đúng',
+        'new_password_confirmation.same' => 'Mật khẩu nhập lại không đúng',
         ];
     }
 }
