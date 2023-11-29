@@ -88,7 +88,7 @@
                     </a>
                     <ul class="sub">
 						<li><a href="{{ route('insert_coupon') }}">Thêm coupon</a></li>
-                        <li><a href="{{ route('contact_index') }}">Liệt kê Coupon</a></li>
+                        <li><a href="{{ route('list_coupon') }}">Liệt kê Coupon</a></li>
                     </ul>
                 </li>
 

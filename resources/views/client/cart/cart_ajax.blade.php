@@ -81,40 +81,70 @@
                                     <td>
                                         <input type="submit" value="Cập nhật giỏ hàng" name="update_qty"
                                             class="check_out btn btn btn-default btn-sm">
-                                    <td><a class="btn btn-default check_out" href="{{ url('/del-all-product') }}">Xóa tất
-                                            cả sản phẩm</a></td>
+                                    <td><a class="btn btn-default check_out" href="{{ url('/del-all-product') }}">Xóa tất cả</a></td>
+                                    @if (Session::get('coupon'))
+                                    <td><a class="btn btn-default check_out" href="{{ url('/del-coupon') }}">Xóa tất cả sản phẩm</a></td>
+                                    @endif
 
                                     <td colspan="2">
-                                        <li>Tổng<span>{{ number_format($total, 0, ',', '.') }} đ</span></li>
-                                        <li>Thuế <span></span></li>
-                                        <li>Phí vận chuyển <span>Free</span></li>
-                                        <li>Tiền sau giảm <span></span></li>
-                                    </td>
-                                    </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td colspan="5">
-                                        <center>
-                                            @php
-                                                echo 'Làm ơn thêm sản phẩm vào giỏ hàng';
-                                            @endphp
-                                        </center>
-                                    </td>
-                                </tr>
+                                        <li>Tổng: <span>{{ number_format($total, 0, ',', '.') }} đ</span></li>
+                                        @if (Session::get('coupon'))
+                                            <li>
+                                                @foreach (Session::get('coupon') as $key => $cou)
+                                                    @if ($cou['coupon_condition'] == 1)
+                                                        Mã giảm : {{ $cou['coupon_number'] }} %
+                                                        <p>
+                                                            @php
+                                                                $total_coupon = ($total * $cou['coupon_number']) / 100;
+                                                                echo '<p><li>Tổng giảm: ' . number_format($total_coupon, 0, ',', '.') . 'đ</li></p>';
+                                                            @endphp
+                                                        </p>
+                                                        <p>
+                                                            <li>Tổng đã giảm: {{ number_format($total - $total_coupon, 0, ',', '.') }} đ</li>
+                                                        </p>
+                                                    @elseif ($cou['coupon_condition'] == 2)
+                                                    Mã giảm : {{ number_format($cou['coupon_number'], 0, ',', '.') }} K
+                                                    <p>
+                                                        @php
+                                                            $total_coupon = $total - $cou['coupon_number'];
+                                                        @endphp
+                                                    </p>
+                                                    <p>
+                                                        <li>Tổng đã giảm: {{ number_format($total_coupon, 0, ',', '.') }} đ</li>
+                                                    </p>
+                                                    @endif
+                                                @endforeach
+                                            </li>
+                                        @endif
+                            </td>
+                            </td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td colspan="5">
+                                    <center>
+                                        @php
+                                            echo 'Làm ơn thêm sản phẩm vào giỏ hàng';
+                                        @endphp
+                                    </center>
+                                </td>
+                            </tr>
                             @endif
                         </tbody>
                     </form>
-                    <tr>
-                        <td>
-                            <form action="{{ url('/check-coupon') }}" method="POST">
-                                @csrf
-                                <input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá" width="50%"><br>
-                                <input type="submit" class="btn btn-default check_coupon" value="Tính mã giảm giá"
-                                    name="check_coupon">
-                            </form>
-                        </td>
-                    </tr>
+                    @if (Session::get('cart'))
+                        <tr>
+                            <td>
+                                <form action="{{ url('/check-coupon') }}" method="POST">
+                                    @csrf
+                                    <input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá"
+                                        width="50%"><br>
+                                    <input type="submit" class="btn btn-default check_coupon" value="Tính mã giảm giá"
+                                        name="check_coupon">
+                                </form>
+                            </td>
+                        </tr>
+                    @endif
                 </table>
             </div>
         </div>

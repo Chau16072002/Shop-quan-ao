@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SliderAdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -135,9 +136,12 @@ Route::get('/del-all-product', [CartController::class, 'delete_all_product']);
 
 //Coupon
 Route::post('/check-coupon', [CartController::class, 'check_coupon']);
+Route::get('/del-coupon', [CouponController::class, 'del_coupon']);
 //Coupon-admin
 Route::get('/insert-coupon', [CouponController::class, 'insert_coupon'])->name('insert_coupon');
-Route::get('/insert-coupon-code', [CouponController::class, 'insert_coupon_code'])->name('insert_coupon_code');
+Route::get('/list-coupon', [CouponController::class, 'list_coupon'])->name('list_coupon');
+Route::post('/insert-coupon-code', [CouponController::class, 'insert_coupon_code'])->name('insert_coupon_code');
+Route::get('/delete-coupon/{id}', [CouponController::class, 'delete_coupon'])->name('delete_coupon');
 
 //Contact
 Route::prefix('contact')->group(function () {
