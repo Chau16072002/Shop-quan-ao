@@ -8,19 +8,45 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Cart;
+use App\Models\Coupon;
 
 
 session_start();
 
 class CartController extends Controller
 {
-    public function __construct(Product $product){
-        $this->product = $product;
-    }
-
     public function check_coupon(Request $request){
         $data = $request->all();
-        print_r($data);
+        $coupon = Coupon::where('coupon_code', $data['coupon'])->first();
+        if($coupon){
+            $cout_coupon = $coupon->count();
+            if($cout_coupon>0){
+                $coupon_session = Session::get('coupon');
+                if($coupon_session==true){
+                    $is_avaiable = 0;
+                    if($is_avaiable==0){
+                        $cou[] = array(
+                            'coupon_code' => $coupon->coupon_code,
+                            'coupon_condition' => $coupon->coupon_condition,
+                            'coupon_number' => $coupon->coupon_number,
+                        );
+                        Session::put('coupon', $cou);
+                    }
+                }else {
+                    $cou[] = array(
+                        'coupon_code' => $coupon->coupon_code,
+                        'coupon_condition' => $coupon->coupon_condition,
+                        'coupon_number' => $coupon->coupon_number,
+                    );
+                    Session::put('coupon', $cou);
+                }
+
+                Session::save();
+                return redirect()->back()->with('message', 'Thêm mã giảm giá thành công!!');
+            }
+        }else{
+            return redirect()->back()->with('error', 'Mã giảm giá không đúng!!');
+        }
     }
 
     public function gio_hang(Request $request){
@@ -75,7 +101,7 @@ class CartController extends Controller
         Session::save();
         //  Section::destroy();
     }
-    
+
     public function delete_product($session_id){
         $cart = Session::get('cart');
         // echo '<pre>';
@@ -117,6 +143,7 @@ class CartController extends Controller
         $cart = Session::get('cart');
         if($cart==true){
             Session::forget('cart');
+            Session::forget('coupon');
             return redirect()->back()->with('message', 'Xóa hết giỏ hàng thành công!!');
         }
     }

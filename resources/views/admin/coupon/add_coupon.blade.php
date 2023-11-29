@@ -27,7 +27,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Số lượng mã</label>
-                                <input type="text" class="form-control" name="coupon_times" id="" >
+                                <input type="text" class="form-control" name="coupon_time" id="" >
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tính năng mã giảm giá</label>
