@@ -124,9 +124,21 @@ Route::prefix('admins')->group(function () {
 });
 //Cart
 Route::post('/update_cart_qty', [CartController::class, 'update_cart_qty'])->name('update_cart_qty');
+Route::post('/update-cart', [CartController::class, 'update_cart']);
 Route::post('/cart', [CartController::class, 'save_cart'])->name('cart_store');
+Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);
 Route::get('/show_cart', [CartController::class, 'show_cart'])->name('show_cart');
+Route::get('/gio-hang', [CartController::class, 'gio_hang']);
 Route::get('/delete_cart/{rowId}', [CartController::class, 'delete_cart'])->name('delete_cart');
+Route::get('/delete-sp/{session_id}', [CartController::class, 'delete_product']);
+Route::get('/del-all-product', [CartController::class, 'delete_all_product']);
+
+//Coupon
+Route::post('/check-coupon', [CartController::class, 'check_coupon']);
+//Coupon-admin
+Route::get('/insert-coupon', [CouponController::class, 'insert_coupon'])->name('insert_coupon');
+Route::get('/insert-coupon-code', [CouponController::class, 'insert_coupon_code'])->name('insert_coupon_code');
+
 //Contact
 Route::prefix('contact')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('contact_index');

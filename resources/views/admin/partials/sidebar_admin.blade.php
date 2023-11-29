@@ -81,6 +81,16 @@
 						<li><a href="{{ route('contact_index') }}">Liệt kê Contact</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Mã giảm giá</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{ route('insert_coupon') }}">Thêm coupon</a></li>
+                        <li><a href="{{ route('contact_index') }}">Liệt kê Coupon</a></li>
+                    </ul>
+                </li>
 
 
             </ul>            </div>

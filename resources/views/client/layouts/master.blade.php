@@ -12,6 +12,7 @@
     <link href="{{ asset("/fontend/css/price-range.css") }}" rel="stylesheet">
     <link href="{{ asset("/fontend/css/animate.css") }}" rel="stylesheet">
     <link href="{{ asset("/fontend/css/main.css") }}" rel="stylesheet">
+    <link href="{{ asset("/fontend/css/sweetalert.css") }}" rel="stylesheet">
     @yield('css')
 </head>
 
@@ -26,6 +27,7 @@
     <script src="{{ asset("/fontend/js/price-range.js") }}"></script>
     <script src="{{ asset("/fontend/js/jquery.prettyPhoto.js") }}"></script>
     <script src="{{ asset("/fontend/js/main.js") }}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
@@ -66,12 +68,42 @@
         });
 
     }
-
-
-
-
     $(function() {
         $(document).on('click', '.action_wishlist', actionWishlist);
+    });
+
+    $(document).ready(function(){
+        $('.add-to-cart').click(function(event){
+            event.preventDefault();
+            var id = $(this).data('id_product');
+            var cart_product_id = $('.cart_product_id_' + id).val();
+            var cart_product_name = $('.cart_product_name_' + id).val();
+            var cart_product_image = $('.cart_product_image_' + id).val();
+            var cart_product_price = $('.cart_product_price_' + id).val();
+            var cart_product_qty = $('.cart_product_qty_' + id).val();
+            var _token = $('input[name="_token"]').val();
+
+            $.ajax({
+                url: '{{url('/add-cart-ajax')}}',
+                method: 'POST',
+                data:{cart_product_id:cart_product_id,cart_product_name:cart_product_name,cart_product_image:cart_product_image,cart_product_price:cart_product_price,cart_product_qty:cart_product_qty,_token:_token},
+
+                success:function(data){
+                    Swal.fire({
+                        title: "Đã thêm sản phẩm vào giỏ hàng",
+                        text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                        showCancelButton: true,
+                        cancelButtonText: "Xem tiếp",
+                        confirmButtonClass: "btn-success",
+                        confirmButtonText: "Đi đến giỏ hàng",
+                        closeOnConfirm: false
+                        },
+                        function() {
+                            window.location.replace("{{url('/gio-hang')}}");
+                    });
+                }
+            });
+        });
     });
     </script>
     <script>
