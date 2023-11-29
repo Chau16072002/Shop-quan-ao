@@ -82,6 +82,8 @@ Route::prefix('brands')->group(function () {
 
 //Product
 Route::prefix('products')->group(function () {
+    //danh gia sao
+    Route::get('/insert-rating/{id}{rating}', [ProductController::class, 'insert_rating'])->name('insert_rating');
     //Index wishlist
     Route::get('/product/{id}', [ProductController::class, 'storeWishlist'])->name('storeWishlist');
     Route::get('/wishlist', [ProductController::class, 'showWishlist'])->name('showWishlist');

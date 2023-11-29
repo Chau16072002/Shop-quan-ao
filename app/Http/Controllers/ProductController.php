@@ -18,6 +18,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Http\Requests\ProductAddRequest;
 use App\Models\Wishlist;
+use App\Models\Rating;
 
 
 
@@ -29,6 +30,7 @@ class ProductController extends Controller
     private $productImage;
     private $product;
     private $wishlist;
+    private $rating;
    use StorageImageTrait;
     public function AuthLogin(){
         $admin_id = session()->get('admin_id');
@@ -39,11 +41,13 @@ class ProductController extends Controller
         }
     }
 
-    public function __construct(Category $category, Product $product, ProductImage $productImage, Wishlist $wishlist){
+    public function __construct(Rating $rating,Category $category, Product $product, ProductImage $productImage, Wishlist $wishlist){
         $this->category = $category;
         $this->product = $product;
         $this->productImage = $productImage;
         $this->wishlist = $wishlist;
+        $this->rating = $rating;
+     
     }
 
     public function create(){
@@ -244,6 +248,10 @@ class ProductController extends Controller
         $product = Product::where('id',$id)->get();
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
+        
+        $rating =  Rating::where('product_id',$id)->avg('rating');
+        $rating1 = round($rating);
+        
         foreach($product as $relativeProduct){
             $category_id = $relativeProduct->category_id;
 
@@ -251,7 +259,7 @@ class ProductController extends Controller
         $relativeProducts = Product::where('category_id',$category_id)->whereNotIn('id',[$id])->get();
 
 
-        return view('client.detail.detail',compact('product','categorys','brandes','relativeProducts'));
+        return view('client.detail.detail',compact('product','categorys','brandes','relativeProducts','rating1'));
     }
 
 
@@ -265,6 +273,17 @@ class ProductController extends Controller
                            $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
         return view('/search', compact('products','categorys','brandes'));
+    }
+    public function insert_rating($id,$rating){
+        $rating = $this->rating->create([
+            'product_id' => $id,
+            'rating' => $rating
+        ]);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    
     }
 
 }
