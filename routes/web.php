@@ -113,18 +113,6 @@ Route::prefix('slider')->group(function () {
     Route::post('/update/{id}', [SliderAdminController::class, 'update'])->name('slider_update');
     Route::get('/delete/{id}', [SliderAdminController::class, 'delete'])->name('slider_delete');
 });
-//Customer
-Route::prefix('customer')->group(function () {
-    Route::get('/', [CustomerController::class, 'index'])->name('customer_index');
-
-
-    Route::get('/unactive-slider/{id}', [SliderAdminController::class, 'unactive_slider'])->name('unactive_slider');
-    Route::get('/active-slider/{id}', [SliderAdminController::class, 'active_slider'])->name('active_slider');
-
-    Route::get('/edit/{id}', [SliderAdminController::class, 'edit'])->name('slider_edit');
-    Route::post('/update/{id}', [SliderAdminController::class, 'update'])->name('slider_update');
-    Route::get('/delete/{id}', [SliderAdminController::class, 'delete'])->name('slider_delete');
-});
 //Admin
 Route::prefix('admins')->group(function () {
     Route::get('/all_admin', [AdminController::class, 'ShowAllAdmins'])->name('all_admin');
@@ -155,4 +143,11 @@ Route::get('/insert-coupon-code', [CouponController::class, 'insert_coupon_code'
 Route::prefix('contact')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('contact_index');
     Route::get('/delete/{id}', [ContactController::class, 'delete'])->name('contact_delete');
+});
+//Customer
+Route::prefix('customer')->group(function () {
+    Route::get('/', [CustomerController::class, 'index'])->name('customer_index');
+    Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customer_delete');
+    Route::get('/edit/{id}', [CustomerController::class, 'edit'])->name('customer_edit');
+    Route::post('/update/{id}', [CustomerController::class, 'update'])->name('customer_update');
 });

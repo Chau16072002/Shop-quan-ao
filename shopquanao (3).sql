@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 16, 2023 at 11:42 AM
+-- Generation Time: Nov 29, 2023 at 09:17 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -82,6 +82,29 @@ INSERT INTO `categories` (`id`, `parent_id`, `category_name`, `category_desc`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `con_name` varchar(191) NOT NULL,
+  `con_email` varchar(100) NOT NULL,
+  `con_subject` varchar(191) NOT NULL,
+  `con_message` varchar(191) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contact`
+--
+
+INSERT INTO `contact` (`id`, `con_name`, `con_email`, `con_subject`, `con_message`, `created_at`, `updated_at`) VALUES
+(1, 'Nguyễn Trí Bảo', 'bao@gmailcom', 'test', '111', '2023-11-28 19:39:24', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -134,7 +157,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2023_11_13_144159_create_products_table', 14),
 (23, '2023_11_14_084857_create_product_images_table', 15),
 (24, '2023_11_13_072913_create_sliders_table', 16),
-(25, '2023_11_15_131212_create_tbl_customer', 16);
+(25, '2023_11_15_131212_create_tbl_customer', 16),
+(26, '2023_11_17_045143_create_wishlists_table', 17),
+(27, '2023_11_27_170127_create_contact', 17);
 
 -- --------------------------------------------------------
 
@@ -310,8 +335,8 @@ CREATE TABLE `tbl_customer` (
 --
 
 INSERT INTO `tbl_customer` (`id`, `cus_name`, `cus_email`, `cus_password`, `cus_phone`, `cus_address`, `cus_image`, `created_at`, `updated_at`) VALUES
-(1, 'dang minh chau', 'chau.dmc1607@gmail.com', '12345', '0332924692', 'dfdfdfdf', NULL, NULL, NULL),
-(2, 'Nguyễn Trí Bảo', 'tribao@gmail.com', '202cb962ac59075b964b07152d234b70', '21312', 'Đồng Nai', NULL, NULL, NULL);
+(1, 'dang minh chau', 'chau.dmc1607@gmail.com', '123456', '0332924692', 'Thủ Đức', NULL, NULL, '2023-11-29 00:50:26'),
+(3, 'Bảo', 'tribao0510@gmail.com', '202cb962ac59075b964b07152d234b70', '01689405149', 'Thủ Đức', NULL, '2023-11-29 01:11:56', '2023-11-29 01:13:27');
 
 -- --------------------------------------------------------
 
@@ -330,6 +355,20 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -344,6 +383,12 @@ ALTER TABLE `brands`
 -- Indexes for table `categories`
 --
 ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact`
+--
+ALTER TABLE `contact`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -416,6 +461,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -432,6 +483,12 @@ ALTER TABLE `categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT for table `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -441,7 +498,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -489,12 +546,18 @@ ALTER TABLE `tbl_admin`
 -- AUTO_INCREMENT for table `tbl_customer`
 --
 ALTER TABLE `tbl_customer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `wishlists`
+--
+ALTER TABLE `wishlists`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 

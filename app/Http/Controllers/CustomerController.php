@@ -19,7 +19,7 @@ class CustomerController extends Controller
     {
         $this->customer = $customer;
     }
-    //
+    //check customer login
     public function AuthLogin(){
         $customer_id = session()->get('cus_id');
         if ($customer_id){
@@ -28,6 +28,57 @@ class CustomerController extends Controller
             return redirect('/dang-nhap')->send();
         }
     }
+    //check admin login
+    public function AuthLogin1(){
+        $admin_id = session()->get('admin_id');
+        if ($admin_id){
+           return redirect('dashboard');
+        }else {
+            return redirect('admin')->send();
+        }
+    }
+    //Admin
+    public function index(){
+        $this->AuthLogin1();
+        $customers = DB::table('tbl_customer')->get();
+        return view('admin.customer.all_customer', compact('customers'));
+    }
+    public function edit($id)
+    {
+        $customer = DB::table('tbl_customer')->where('id', $id)->first();
+
+        return view('admin.customer.edit_customer', compact('customer'));
+
+    }
+    public function delete($id){
+        $contact = DB::table('tbl_customer')->where('id', $id)->delete();
+        session()->flash('message', 'Xóa Customer thành công !!!');
+        return redirect()->route('customer_index');
+    }
+
+    public function update($id, Request $request)
+    {
+        $dataCustomer = array();
+        $dataCustomer['cus_name'] = $request->cus_name;     
+        $dataCustomer['cus_email'] = $request->cus_email;
+        $dataCustomer['cus_phone'] = $request->cus_phone;
+        $dataCustomer['cus_password'] = $request->cus_password;
+        $dataCustomer['cus_address'] = $request->cus_address;
+        $dataCustomer['updated_at'] = now();
+          //Xử lý ràng buộc số điện thoại 
+       $validator = Validator::make($request->all(), [
+        'cus_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+    ]);
+    if ($validator->fails()) {
+        session()->put('message', 'Số điện thoại không hợp lệ vui lòng nhập đúng định dạng số điện thoại');
+        return redirect('/customer/edit/'.$id);
+    }
+        DB::table('tbl_customer')
+        ->where('id', $id)->update($dataCustomer);
+        session()->put('message', 'Thay đổi thông tin thành công');
+        return redirect()->route('customer_index');
+    }
+    //Clients
     //Đăng nhập Customer
     public function login(Request $request){
         $customer_email = $request->customer_email;
