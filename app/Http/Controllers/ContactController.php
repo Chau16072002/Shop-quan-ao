@@ -21,7 +21,7 @@ class ContactController extends Controller
     }
     public function index(){
         $this->AuthLogin();
-        $contacts = DB::table('contact')->get();
+        $contacts = DB::table('contact')->paginate(5);
         return view('admin.contact.all_contact', compact('contacts'));
     }
     public function delete($id){
@@ -39,7 +39,7 @@ class ContactController extends Controller
             $data['con_name'] = $request->con_name;
             $data['con_email'] = $request->con_email;
         }
-      
+
         $data['con_subject'] = $request->con_subject;
         $data['con_message'] = $request->con_message;
         $data['created_at'] = now();

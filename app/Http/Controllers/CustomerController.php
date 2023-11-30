@@ -40,7 +40,7 @@ class CustomerController extends Controller
     //Admin
     public function index(){
         $this->AuthLogin1();
-        $customers = DB::table('tbl_customer')->get();
+        $customers = DB::table('tbl_customer')->paginate(5);;
         return view('admin.customer.all_customer', compact('customers'));
     }
     public function edit($id)
@@ -59,13 +59,13 @@ class CustomerController extends Controller
     public function update($id, Request $request)
     {
         $dataCustomer = array();
-        $dataCustomer['cus_name'] = $request->cus_name;     
+        $dataCustomer['cus_name'] = $request->cus_name;
         $dataCustomer['cus_email'] = $request->cus_email;
         $dataCustomer['cus_phone'] = $request->cus_phone;
         $dataCustomer['cus_password'] = $request->cus_password;
         $dataCustomer['cus_address'] = $request->cus_address;
         $dataCustomer['updated_at'] = now();
-          //Xử lý ràng buộc số điện thoại 
+          //Xử lý ràng buộc số điện thoại
        $validator = Validator::make($request->all(), [
         'cus_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
     ]);
@@ -117,7 +117,7 @@ class CustomerController extends Controller
     public function editCustomer(Request $request){
         $id = session()->get('cus_id');
         $dataCustomer = array();
-        $dataCustomer['cus_name'] = $request->cus_name;     
+        $dataCustomer['cus_name'] = $request->cus_name;
         $dataCustomer['cus_email'] = $request->cus_email;
         $dataCustomer['cus_phone'] = $request->cus_phone;
         $dataCustomer['cus_password'] = $request->cus_password;
@@ -158,11 +158,11 @@ class CustomerController extends Controller
     public function register(Request $request) {
     //Kiểm tra email đã được đăng ký chưa:
     $check = DB::table('tbl_customer')->where('cus_email', $request->customer_email)->first();
-    if($check != null){  
+    if($check != null){
             session()->put('message', 'Email đã được đăng ký vui lòng sử dụng email khác');
             return redirect('/dang-ky');
     }
-    //Xử lý ràng buộc số điện thoại 
+    //Xử lý ràng buộc số điện thoại
        $validator = Validator::make($request->all(), [
         'customer_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
     ]);
@@ -172,13 +172,13 @@ class CustomerController extends Controller
     }
 
     // Nếu dữ liệu hợp lệ, tiếp tục xử lý
-       
-       
+
+
        $data = array();
         $data['cus_name'] = $request->customer_name;
         $data['cus_email'] = $request->customer_email;
         if($request->customer_password == $request->password_confirm){
-            $data['cus_password'] = md5($request->customer_password);        
+            $data['cus_password'] = md5($request->customer_password);
         }
         else{
             session()->put('message', 'Mật khẩu nhập lại không trùng khớp');
