@@ -31,8 +31,15 @@ class ContactController extends Controller
     }
     //Clients
     public function sendContact(Request $request){
-        $data['con_name'] = $request->con_name;
-        $data['con_email'] = $request->con_email;
+        if($request->con_name ==null && $request->con_email==null){
+            $data['con_name'] = session()->get('cus_name');
+            $data['con_email'] = session()->get('cus_email');
+        }
+        else{
+            $data['con_name'] = $request->con_name;
+            $data['con_email'] = $request->con_email;
+        }
+      
         $data['con_subject'] = $request->con_subject;
         $data['con_message'] = $request->con_message;
         $data['created_at'] = now();
