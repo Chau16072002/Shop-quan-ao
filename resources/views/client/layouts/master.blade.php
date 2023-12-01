@@ -97,10 +97,12 @@
                         confirmButtonClass: "btn-success",
                         confirmButtonText: "Đi đến giỏ hàng",
                         closeOnConfirm: false
+
                         },
                         function() {
-                            window.location.replace("{{url('/gio-hang')}}");
-                    });
+                            window.location.href = "{{url('/gio-hang')}}";
+                        }
+                    );
                 }
             });
         });
@@ -128,7 +130,7 @@
         $(document).on('mouseenter','.rating', function(){
             var index = $(this).data("index");
            var product_id = $(this).data('product_id');
-      
+
              remove_background(product_id);
              for (var count = 1; count <= index ; count++) {
                  $('#'+product_id+'-'+count).css('color','#ffcc00');
@@ -140,18 +142,18 @@
             var product_id = $(this).data('product_id');
             var rating = $(this).data("rating");
             remove_background(product_id);
-            
+
              for (var count = 1; count <= rating ; count++) {
                  $('#'+product_id+'-'+count).css('color','#ffcc00');
              }
         });
         //click danh gia sao
-        
+
         // $(document).on('click','.rating',function(){
         //     var index = $(this).data("index");
         //     var product_id = $(this).data('product_id');
         //     var _token = $('input[name="_token"]').val();
-            
+
         //     $.ajax({
         //         url:'{{url('/insert-rating')}}',
         //         method:'POST',
@@ -171,7 +173,7 @@
             event.preventDefault();
         let urlRequest = $(this).data('url');
         var index = $(this).data("index");
-            
+
             $.ajax({
                 url:urlRequest,
                 method:'GET',

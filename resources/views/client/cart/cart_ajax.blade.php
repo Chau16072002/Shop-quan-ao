@@ -48,11 +48,11 @@
 
                                     <tr>
                                         <td class="cart_product">
-                                            <img src="{{ $cart['product_image'] }}" width="90" alt="">
+                                            <img src="{{ $cart['product_image'] }}" width="50" alt="">
                                         </td>
                                         <td class="cart_name">
                                             <h4><a href=""></a></h4>
-                                            <p>{{ substr($cart['product_name'], 0, 51) }}...</p>
+                                            <p>{{ substr($cart['product_name'], 0, 70) }}...</p>
                                         </td>
 
                                         <td class="cart_price">
