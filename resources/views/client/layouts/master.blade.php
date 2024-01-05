@@ -13,6 +13,13 @@
     <link href="{{ asset("/fontend/css/animate.css") }}" rel="stylesheet">
     <link href="{{ asset("/fontend/css/main.css") }}" rel="stylesheet">
     <link href="{{ asset("/fontend/css/sweetalert.css") }}" rel="stylesheet">
+    <link href='//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/style.css' rel='stylesheet' type='text/css'/>
+
+<script type="text/javascript" src="//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/main.js"></script>
+
+<script type="text/javascript" src="//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/total-comments.js"></script>
+
+<script type="text/javascript" src="/feeds/comments/default?alt=json&amp;callback=idbcomments&amp;max-results=5"></script>
     @yield('css')
 </head>
 

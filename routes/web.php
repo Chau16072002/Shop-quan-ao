@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SliderAdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::get('/contact-us',[HomeController::class,'contact'])->name('contact_us');
 Route::get('/detail/{id}',[ProductController::class,'ProductDetail'])->name('detail');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/contactt-us',[ContactController::class,'sendContact']);
+Route::get('/addComment',[CommentController::class,'addComment']);
+
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 

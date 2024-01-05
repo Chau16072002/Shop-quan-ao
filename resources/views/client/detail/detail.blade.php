@@ -131,6 +131,7 @@
                             <img src="images/product-details/new.jpg" class="newarrival" alt="" />
                             <h2>{{$pro->product_name}}</h2>
                             <p>Web ID: {{$pro->id}}</p>
+                            <?php $value = $pro->id; ?>
                             <img src="images/product-details/rating.png" alt="" />
                             <form action="{{ route('cart_store') }}" method="POST">
                                 @csrf
@@ -164,14 +165,13 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#details" data-toggle="tab">Mô tả</a></li>
                             <li><a href="#companyprofile" data-toggle="tab">Chi tiết sản phẩm</a></li>
-
-                            <li><a href="#reviews" data-toggle="tab">Đánh giá</a></li>
+                            <li><a href="#ratings" data-toggle="tab">Đánh giá</a></li>
+                            <li><a href="#reviews" data-toggle="tab">Reviews (<?php echo $commentCount ?>)</a></li>
                         </ul>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="details">
                             <p>{!!$pro->product_desc!!}</p>
-
                         </div>
 
                         <div class="tab-pane fade" id="companyprofile">
@@ -179,25 +179,53 @@
 
 
                         </div>
-
-                        <div class="tab-pane fade" id="reviews">
+                        <div class="tab-pane fade" id="ratings">
                             <div class="col-sm-12">
 
                                 <p><b>Ratting</b></p>
-                                <ul class="list-inline">
-                                    @for($count=1;$count<=5;$count++)  
-									@php if($count<=$rating1){
-										 $color='color:#ffcc00;'
-                                        ; }
-										 else{ $color='color:#ccc;' ; 
-										}
-										  @endphp
-										   <li id="{{$pro->id}}-{{$count}}"
+                                <ul class="list-inline " style="background: none">
+                                    @for($count=1;$count<=5;$count++) @php if($count<=$rating1){ $color='color:#ffcc00;'
+                                        ; } else{ $color='color:#ccc;' ; } @endphp <li id="{{$pro->id}}-{{$count}}"
                                         data-index="{{$count}}" data-product_id="{{$pro->id}}"
-                                        data-rating="{{$rating1}}" class="rating" data-url="{{ route('insert_rating',['id' =>$pro->id,'rating' =>$count]) }}"
+                                        data-rating="{{$rating1}}" class="rating"
+                                        data-url="{{ route('insert_rating',['id' =>$pro->id,'rating' =>$count]) }}"
                                         style="cursor:pointer; {{$color}} font-size:30px;">&#9733</li>
                                         @endfor
                                 </ul>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade active in" id="reviews">
+                            <div class="col-sm-12">
+                                <h3>Comments</h3>
+                                <?php
+                                $vnTimeZone = new DateTimeZone('Asia/Ho_Chi_Minh');
+
+                                // Lấy thời gian hiện tại theo múi giờ Việt Nam
+                                $currentTimeVN = new DateTime('now', $vnTimeZone);
+                                foreach($comments as $cmt):?>
+                                <ul>
+                                    <li><a href=""><i class="fa fa-user"></i><span
+                                                style="text-transform: none;">{{ $cmt->customer->cus_name }}</span></a>
+                                    </li>
+
+                                    <li><a href=""><i class="fa fa-clock-o"></i>
+                                            {{$cmt->updated_at->format('H:i A')}}</a></li>
+                                    <li><a href=""><i
+                                                class="fa fa-calendar-o"></i>{{$cmt->updated_at->format('d M Y')}}</a>
+                                    </li>
+                                </ul>
+                                <p>{{$cmt->message}}</p>
+                                <?php endforeach;?>
+                                <p><b>Write Your Review</b></p>
+                                <form action="/addComment" method="get">
+                                <input type="hidden" name="productid" value="<?php echo $value ?>"> 
+								<textarea name="message" id="message"></textarea>
+								<button type="submit" class="btn btn-default pull-right">
+									Submit
+								</button>
+								</form>
+
 
                             </div>
                         </div>
@@ -210,6 +238,11 @@
 
             </div>
         </div>
+
+
+
+
+
         <div class="recommended_items">
             <!--recommended_items-->
             <h2 class="title text-center">recommended items</h2>

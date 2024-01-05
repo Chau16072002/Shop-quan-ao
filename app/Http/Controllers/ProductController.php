@@ -19,7 +19,8 @@ use Illuminate\Http\Response;
 use App\Http\Requests\ProductAddRequest;
 use App\Models\Wishlist;
 use App\Models\Rating;
-
+use App\Models\Comment;
+use App\Models\Customer;
 
 
 session_start();
@@ -31,6 +32,8 @@ class ProductController extends Controller
     private $product;
     private $wishlist;
     private $rating;
+    private $comment;
+    private $customer;
    use StorageImageTrait;
     public function AuthLogin(){
         $admin_id = session()->get('admin_id');
@@ -41,13 +44,14 @@ class ProductController extends Controller
         }
     }
 
-    public function __construct(Rating $rating,Category $category, Product $product, ProductImage $productImage, Wishlist $wishlist){
+    public function __construct(Rating $rating,Category $category, Product $product, ProductImage $productImage, Wishlist $wishlist, Comment $comment, Customer $customer){
         $this->category = $category;
         $this->product = $product;
         $this->productImage = $productImage;
         $this->wishlist = $wishlist;
         $this->rating = $rating;
-     
+        $this->comment = $comment;
+        $this->customer = $customer;
     }
 
     public function create(){
@@ -248,10 +252,14 @@ class ProductController extends Controller
         $product = Product::where('id',$id)->get();
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
-        
+        $comments = Comment::where('product_id',$id)->get();
         $rating =  Rating::where('product_id',$id)->avg('rating');
         $rating1 = round($rating);
-        
+        //Lấy tổng số bình luận của 1 sản phẩm
+        $commentCount = 0;
+        foreach($comments as $count){
+            $commentCount += 1;
+        }
         foreach($product as $relativeProduct){
             $category_id = $relativeProduct->category_id;
 
@@ -259,7 +267,7 @@ class ProductController extends Controller
         $relativeProducts = Product::where('category_id',$category_id)->whereNotIn('id',[$id])->get();
 
 
-        return view('client.detail.detail',compact('product','categorys','brandes','relativeProducts','rating1'));
+        return view('client.detail.detail',compact('product','categorys','brandes','relativeProducts','rating1','comments','commentCount'));
     }
 
 
