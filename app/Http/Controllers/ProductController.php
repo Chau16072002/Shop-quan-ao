@@ -107,6 +107,10 @@ class ProductController extends Controller
             }
 
             session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
+           
+        }
+        else{
+            session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
             return redirect()->route('product_create');
         }
 
@@ -172,6 +176,10 @@ class ProductController extends Controller
             );
         }
 
+        session()->flash('message', 'Cập nhập sản phẩm thành công !!!');
+        return redirect()->route('product_index');
+    }
+    else{
         session()->flash('message', 'Cập nhập sản phẩm thành công !!!');
         return redirect()->route('product_index');
     }

@@ -23,7 +23,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
 <div class="log-w3">
 <div class="w3layouts-main">
-	<h2>Đăng nhập</h2>
+	<h2>Lấy lại mật khẩu</h2>
     <?php
     $message = Session::get('message');
     if ($message){
@@ -31,16 +31,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         session()->put('message', null);
     }
     ?>
-		<form action="{{ URL::to('/') }}" method="post">
+    <p>Nhập email mà bạn đã đăng ký tài khoản trong hệ thống của chúng tôi</p>
+		<form action="{{ URL::to('/postForgetPass') }}" method="POST">
             {{ csrf_field() }}
 			<input type="email" class="ggg" name="customer_email" placeholder="Nhập email" required="">
-			<input type="password" class="ggg" name="customer_password" placeholder="Nhập mật khẩu" required="">
-			<h6><a href="forget-password">Quên mật khẩu?</a></h6>
 				<div class="clearfix"></div>
-				<input type="submit" value="Đăng nhập" name="login">
+				<input type="submit" value="Gửi mail xác nhận" name="login">
 		</form>
-		<p>Bạn chưa có tài khoản?<a href="dang-ky">Tạo tài khoản</a></p>
-		<br><br><p><a href="/" class="active">Quay lại trang chủ</a></p>
 </div>
 </div>
 <script src="{{ asset("/backend/js/bootstrap.js") }}"></script>

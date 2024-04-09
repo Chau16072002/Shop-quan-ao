@@ -8,7 +8,6 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background:;
   position: relative;
   font-weight:400px;
 }
@@ -899,7 +898,6 @@ h2.title {
   transition: height 500ms ease 0s;
   width: 100%;
   display: block;
-  opacity:;
 }
 
 .single-products:hover .product-overlay {
@@ -2519,5 +2517,29 @@ h2.title {
 .contact-info .social-networks ul li a:hover{
   color: #FE980F;
 }
+	.map-container {
+    position: relative;
+    width: 100%;
+    height: 300px; /* hoặc bất kỳ chiều cao nào bạn muốn */
+    border-radius: 10px;
+    overflow: hidden;
+}
 
+.map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.map-container p {
+    position: absolute;
+    bottom: 10px; /* hoặc bất kỳ vị trí nào bạn muốn */
+    left: 10px; /* hoặc bất kỳ vị trí nào bạn muốn */
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 

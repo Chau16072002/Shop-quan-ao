@@ -13,8 +13,8 @@
 
 @section('content')
     <div class="container">
-        <H1>Hồ sơ của tôi</H1>
-        <H4>Quản lý thông tin hồ sơ để bảo mật tài khoản</H4>
+        <H1>My Profile</H1>
+        <H4>Manage profile information to secure your account</H4>
         <?php
         $message = Session::get('message');
     if ($message){
@@ -28,32 +28,28 @@
 				<div class="row">
 					<div class="col-md-9">
 					<div class="form-group">
-                    <label for="exampleInputEmail1">Tên</label>
+                    <label for="exampleInputEmail1">Name</label>
                     <input type="text" class="form-control" value="{{ $account->cus_name }}" name="cus_name" required ="" id="exampleInputEmail1">
                     <label for="exampleInputEmail1">Email</label>
                     <input type="email" class="form-control" value="{{ $account->cus_email }}" name="cus_email" required ="" id="exampleInputEmail1">
-                    <label for="exampleInputEmail1">Số điện thoại</label>
+                    <label for="exampleInputEmail1">Phone</label>
                     <input type="text" class="form-control" value="{{ $account->cus_phone }}" name="cus_phone" required ="" id="exampleInputEmail1">
-                    <label  for="Passwrd">Mật khẩu</label><br>
+                    <label  for="Passwrd">Password</label><br>
 					<input type="hidden" class="form-control" value="{{ $account->cus_password }}" name="cus_password" id="exampleInputEmail1">
-                    ******** <a href="/change-password">Đổi mật khẩu</a><br>
-                    <label for="exampleInputEmail1">địa chỉ</label>
+                    ******** <a href="/change-password">Change password</a><br>
+                    <label for="exampleInputEmail1">Address</label>
                     <input type="text" class="form-control" value="{{ $account->cus_address }}" name="cus_address" required ="" id="exampleInputEmail1">
                 </div>
 					</div>
 					 <div class="col-md-3">
 						<div>
-                            <?php if($account->cus_image == null){ ?>
-						<label for="exampleInputEmail1"><i style="font-size: 20em;" class="fa fa-user"></i></label>
-                        <?php } if($account->cus_image != null):?>
-                            <img style="width: 300px; height: 300px;" src="{{ $account->cus_image }}" alt="avata">
-                        <?php endif; ?>
-                                <input type="file" class="form-control" name="cus_image" id="exampleInputEmail1">
+                            <img style="width: 300px; height: 300px;" src="{{ asset("uploads/$account->cus_image") }}" alt="avata">
+                                <input type="file" class="form-control" name="file_upload" id="exampleInputEmail1">
 						</div>
 					 </div>
 				</div>
                
-                <button type="submit" name="cus_submit" class="btn btn-info">Sửa thông tin</button>
+                <button type="submit" name="cus_submit" class="btn btn-info">Edit information</button>
             </form>
         </div>
     </div>

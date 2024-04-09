@@ -163,9 +163,9 @@
                     <!--category-tab-->
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#details" data-toggle="tab">Mô tả</a></li>
-                            <li><a href="#companyprofile" data-toggle="tab">Chi tiết sản phẩm</a></li>
-                            <li><a href="#ratings" data-toggle="tab">Đánh giá</a></li>
+                            <li class="active"><a href="#details" data-toggle="tab">Describe</a></li>
+                            <li><a href="#companyprofile" data-toggle="tab">Product detail</a></li>
+                            <li><a href="#ratings" data-toggle="tab">Evaluate</a></li>
                             <li><a href="#reviews" data-toggle="tab">Reviews (<?php echo $commentCount ?>)</a></li>
                         </ul>
                     </div>
@@ -205,27 +205,37 @@
                                 $currentTimeVN = new DateTime('now', $vnTimeZone);
                                 foreach($comments as $cmt):?>
                                 <ul>
-                                    <li><a href=""><i class="fa fa-user"></i><span
-                                                style="text-transform: none;">{{ $cmt->customer->cus_name }}</span></a>
+                                    <?php $image = $cmt->customer->cus_image; ?>
+                                    <li><a href=""> <img style="width: 30px; height: 30px;"
+                                                src="{{ asset("uploads/$image") }}" alt="avata">
+                                            <span style="text-transform: none;">
+                                                {{ $cmt->customer->cus_name }}</span></a>
                                     </li>
-
                                     <li><a href=""><i class="fa fa-clock-o"></i>
                                             {{$cmt->updated_at->format('H:i A')}}</a></li>
                                     <li><a href=""><i
                                                 class="fa fa-calendar-o"></i>{{$cmt->updated_at->format('d M Y')}}</a>
                                     </li>
+                                    <?php if($cmt->customer->id == session()->get('cus_id')){ ?>
+                                    <div id="comment-{{ $cmt->id }}">
+                                        <button class="edit-comment" data-comment-id="{{ $cmt->id }}">Edit</button>
+                                        <button class="delete-comment" data-comment-id="{{ $cmt->id }}">Delete</button>
+                                        <div id="edit-form-{{ $cmt->id }}" style="display: none;">
+                                        <textarea style="height: 50px;" id="edited-comment-{{ $cmt->id }}">{{ $cmt->message }}</textarea>
+                                            <button class="save-edit" data-comment-id="{{ $cmt->id }}">Save</button>
+                                        </div>
+                                    </div>
+                                    <?php }?>
                                 </ul>
-                                <p>{{$cmt->message}}</p>
+                                <p id="comment-content-{{ $cmt->id }}">{{$cmt->message}}</p>
                                 <?php endforeach;?>
                                 <p><b>Write Your Review</b></p>
-                                <form action="/addComment" method="get">
-                                <input type="hidden" name="productid" value="<?php echo $value ?>"> 
-								<textarea name="message" id="message"></textarea>
-								<button type="submit" class="btn btn-default pull-right">
-									Submit
-								</button>
-								</form>
-
+                                <form role="form " action="">
+                                    <input type="hidden" id="productid" name="productid" value="<?php echo $value ?>">
+                                    <textarea id="comment-content" name="message" rows="4" cols="50"></textarea><br>
+                                    <!-- <button type="button" id="btn-comment">Gửi</button> -->
+                                    <button type="button" id="btn-comment">Gửi</button>
+                                </form>
 
                             </div>
                         </div>
@@ -251,8 +261,6 @@
                 <div class="carousel-inner">
                     <div class="item active">
                         @foreach ($relativeProducts as $relative )
-
-
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">

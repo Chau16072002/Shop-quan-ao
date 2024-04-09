@@ -13,13 +13,17 @@
     <link href="{{ asset("/fontend/css/animate.css") }}" rel="stylesheet">
     <link href="{{ asset("/fontend/css/main.css") }}" rel="stylesheet">
     <link href="{{ asset("/fontend/css/sweetalert.css") }}" rel="stylesheet">
-    <link href='//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/style.css' rel='stylesheet' type='text/css'/>
+    <link href='//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/style.css' rel='stylesheet'
+        type='text/css' />
 
-<script type="text/javascript" src="//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/main.js"></script>
+    <script type="text/javascript" src="//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/main.js">
+    </script>
 
-<script type="text/javascript" src="//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/total-comments.js"></script>
+    <script type="text/javascript"
+        src="//cdn.leanhduc.pro.vn/blogger/codeprovn/template-median/recent-comment/total-comments.js"></script>
 
-<script type="text/javascript" src="/feeds/comments/default?alt=json&amp;callback=idbcomments&amp;max-results=5"></script>
+    <script type="text/javascript" src="/feeds/comments/default?alt=json&amp;callback=idbcomments&amp;max-results=5">
+    </script>
     @yield('css')
 </head>
 
@@ -64,13 +68,13 @@
 
                 }
             },
-		error:function(data){
-            Swal.fire({
-  icon: "error",
-  title: "Oops...",
-  text: "San pham da them vao yeu thich tu truoc",
-});
-		}
+            error: function(data) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "San pham da them vao yeu thich tu truoc",
+                });
+            }
 
         });
 
@@ -79,8 +83,8 @@
         $(document).on('click', '.action_wishlist', actionWishlist);
     });
 
-    $(document).ready(function(){
-        $('.add-to-cart').click(function(event){
+    $(document).ready(function() {
+        $('.add-to-cart').click(function(event) {
             event.preventDefault();
             var id = $(this).data('id_product');
             var cart_product_id = $('.cart_product_id_' + id).val();
@@ -91,19 +95,26 @@
             var _token = $('input[name="_token"]').val();
 
             $.ajax({
-                url: '{{url('/add-cart-ajax')}}',
+                url: '{{url(' / add - cart - ajax ')}}',
                 method: 'POST',
-                data:{cart_product_id:cart_product_id,cart_product_name:cart_product_name,cart_product_image:cart_product_image,cart_product_price:cart_product_price,cart_product_qty:cart_product_qty,_token:_token},
+                data: {
+                    cart_product_id: cart_product_id,
+                    cart_product_name: cart_product_name,
+                    cart_product_image: cart_product_image,
+                    cart_product_price: cart_product_price,
+                    cart_product_qty: cart_product_qty,
+                    _token: _token
+                },
 
-                success:function(data){
+                success: function(data) {
                     Swal.fire({
-                        title: "Đã thêm sản phẩm vào giỏ hàng",
-                        text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
-                        showCancelButton: true,
-                        cancelButtonText: "Xem tiếp",
-                        confirmButtonClass: "btn-success",
-                        confirmButtonText: "Đi đến giỏ hàng",
-                        closeOnConfirm: false
+                            title: "Đã thêm sản phẩm vào giỏ hàng",
+                            text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                            showCancelButton: true,
+                            cancelButtonText: "Xem tiếp",
+                            confirmButtonClass: "btn-success",
+                            confirmButtonText: "Đi đến giỏ hàng",
+                            closeOnConfirm: false
 
                         },
                         function() {
@@ -116,86 +127,186 @@
     });
     </script>
     <script>
-    $(document).ready(function(){
-        $('#sort').on('change',function(){
+    $(document).ready(function() {
+        $('#sort').on('change', function() {
             var url = $(this).val();
             //alert(url);
-            if(url){
+            if (url) {
                 window.location = url;
             }
             return false;
         });
     });
-</script>
-<script>
-        function remove_background(product_id){
-            for (var count = 1; count <= 5 ; count++) {
-                 $('#'+product_id+'-'+count).css('color','#ccc');
-             }
+    </script>
+    <script>
+    function remove_background(product_id) {
+        for (var count = 1; count <= 5; count++) {
+            $('#' + product_id + '-' + count).css('color', '#ccc');
         }
-        //hover danh gia
-        $(document).on('mouseenter','.rating', function(){
-            var index = $(this).data("index");
-           var product_id = $(this).data('product_id');
-
-             remove_background(product_id);
-             for (var count = 1; count <= index ; count++) {
-                 $('#'+product_id+'-'+count).css('color','#ffcc00');
-             }
-        });
-      //  nha chuot k danh gia
-        $(document).on('mouseleave','.rating', function(){
-            var index = $(this).data("index");
-            var product_id = $(this).data('product_id');
-            var rating = $(this).data("rating");
-            remove_background(product_id);
-
-             for (var count = 1; count <= rating ; count++) {
-                 $('#'+product_id+'-'+count).css('color','#ffcc00');
-             }
-        });
-        //click danh gia sao
-
-        // $(document).on('click','.rating',function(){
-        //     var index = $(this).data("index");
-        //     var product_id = $(this).data('product_id');
-        //     var _token = $('input[name="_token"]').val();
-
-        //     $.ajax({
-        //         url:'{{url('/insert-rating')}}',
-        //         method:'POST',
-        //         data:{index:index, product_id:product_id, _token:_token},
-        //         success:function(data){
-        //             if(data == 'done'){
-        //                 alert("Ban da danh gia"+index+"tren 5");
-        //             }else{
-        //                 alert("danh gia loi");
-        //             }
-        //         }
-        //     });
-        // });
-
-        $(document).ready(function(){
-        $('.rating').click(function(event){
-            event.preventDefault();
-        let urlRequest = $(this).data('url');
+    }
+    //hover danh gia
+    $(document).on('mouseenter', '.rating', function() {
         var index = $(this).data("index");
+        var product_id = $(this).data('product_id');
+
+        remove_background(product_id);
+        for (var count = 1; count <= index; count++) {
+            $('#' + product_id + '-' + count).css('color', '#ffcc00');
+        }
+    });
+    //  nha chuot k danh gia
+    $(document).on('mouseleave', '.rating', function() {
+        var index = $(this).data("index");
+        var product_id = $(this).data('product_id');
+        var rating = $(this).data("rating");
+        remove_background(product_id);
+
+        for (var count = 1; count <= rating; count++) {
+            $('#' + product_id + '-' + count).css('color', '#ffcc00');
+        }
+    });
+    //click danh gia sao
+
+    $(document).ready(function() {
+        $('.rating').click(function(event) {
+            event.preventDefault();
+            let urlRequest = $(this).data('url');
+            var index = $(this).data("index");
 
             $.ajax({
-                url:urlRequest,
-                method:'GET',
+                url: urlRequest,
+                method: 'GET',
                 success: function(data) {
+                    if (data.code == 200) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Bạn đã đánh giá " + index + " trên 5",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                    }
+                }
+            });
+        });
+    });
+
+    function actionWishlist(event) {
+        event.preventDefault();
+        let urlRequest = $(this).data('url');
+        let that = $(this);
+
+        $.ajax({
+            type: 'GET',
+            url: urlRequest,
+            success: function(data) {
                 if (data.code == 200) {
                     Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Bạn đã đánh giá "+index+" trên 5",
+                        title: "Yeu thich thanh cong",
                         showConfirmButton: false,
                         timer: 1500
                     });
 
                 }
+            },
+            error: function(data) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "San pham da them vao yeu thich tu truoc",
+                });
             }
+
+        });
+
+    }
+    let _csrf = '{{ csrf_token() }}';
+    $('#btn-comment').click(function(ev) {
+        ev.preventDefault();
+        let content = $('#comment-content').val();
+        let productid = $('#productid').val();
+        console.log(content);
+        let _commentUrl = "{{route('comment.add')}}";
+        console.log(_commentUrl);
+        $.ajax({
+            url: _commentUrl,
+            method: 'POST',
+            data: {
+                content: content,
+                productid: productid,
+                _token: _csrf
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#comment-content').val('');
+                    location.reload();
+                } else {
+                    window.location.href = '/dang-nhap';
+                }
+            }
+        });
+    })
+    $(document).ready(function() {
+        $('.delete-comment').click(function(event) {
+            event.preventDefault();
+
+            var commentId = $(this).data('comment-id');
+            console.log(commentId);
+            $.ajax({
+                url: '/comments/' + commentId,
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    //Xóa bình luận khỏi giao diện người dùng
+                    alert('Comment deleted successfully');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    //console.error(xhr.responseText);
+                    alert('Error deleting comment');
+                }
+            });
+        });
+    });
+    $(document).ready(function() {
+        $('.edit-comment').click(function() {
+            var commentId = $(this).data('comment-id');
+            if ($('#edit-form-' + commentId).is(":visible")) {
+                // Nếu đang hiển thị, ẩn thẻ đi
+                $('#edit-form-' + commentId).hide();
+                $('#comment-content-' + commentId).show();
+            } else {
+                // Nếu không hiển thị, hiển thị thẻ lên
+                $('#edit-form-' + commentId).show();
+                $('#comment-content-' + commentId).hide();
+            }
+        });
+        $('.save-edit').click(function() {
+            var commentId = $(this).data('comment-id');
+            var editedComment = $('#edited-comment-' + commentId).val();
+            $.ajax({
+                url: '/commentts/' + commentId,
+                type: 'get',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    content: editedComment
+                },
+                success: function(response) {
+                    $('#comment-content-' + commentId).text(editedComment).show();
+                    $('#edit-form-' + commentId).hide();
+                    alert('Comment edited successfully');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('Error editing comment');
+                }
             });
         });
     });

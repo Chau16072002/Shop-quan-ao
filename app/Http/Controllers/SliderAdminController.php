@@ -101,7 +101,6 @@ class SliderAdminController extends Controller
         }
 
     }
-
     public function delete($id){
         $this->slider->find($id)->delete();
         session()->flash('message', 'Xóa slider sản phẩm thành công !!!');

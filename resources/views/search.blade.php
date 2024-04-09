@@ -30,9 +30,9 @@
 								<div class="single-products">
 									<a href="{{route('detail',['id' => $pro->id])}}">
 									<div class="productinfo text-center">
-											<img src="{{$pro->product_image }}" alt="" />
+									<img src="{{ asset("$pro->product_image") }}" alt="">
 											<h2>{{$pro->product_price}}</h2>
-											<p>{{$pro->product_name}}</p>
+											<p style="max-width: 300px; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$pro->product_name}}</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 										<!-- <div class="product-overlay">
@@ -45,11 +45,19 @@
 									</a>
 								</div>
 								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="{{route('storeWishlist',['id' => $pro->id])}}"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a onclick="#" href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
+                                <ul class="nav nav-pills nav-justified">
+                                    <?php $value = session()->get('cus_id');
+								if($value != null):?>
+
+                                    <li><a data-url="{{ route('storeWishlist', ['id' =>$pro->id]) }}"
+                                            class="action_wishlist"><i class="fa fa-plus-square"></i>Add to wishlist</a>
+                                    </li>
+                                    <?php
+								endif; if($value == null):?>
+                                    <li><a href="/dang-nhap"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
 							</div>
 						</div>
 						@endforeach

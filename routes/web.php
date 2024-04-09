@@ -41,8 +41,17 @@ Route::get('/contact-us',[HomeController::class,'contact'])->name('contact_us');
 Route::get('/detail/{id}',[ProductController::class,'ProductDetail'])->name('detail');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/contactt-us',[ContactController::class,'sendContact']);
-Route::get('/addComment',[CommentController::class,'addComment']);
 
+// Định nghĩa route để xử lý yêu cầu POST thêm comment
+Route::post('/comment/add', [CommentController::class,'add'])->name('comment.add');
+Route::get('/comments/{id}', [CommentController::class,'delete'])->name('comments.destroy');
+Route::get('/commentts/{id}',  [CommentController::class,'update'])->name('comments.update');
+//Verifie Email
+Route::get('test-mail',[HomeController::class, 'testEmail']);
+Route::get('forget-password',[HomeController::class, 'forgetPass']);
+Route::post('postForgetPass',[HomeController::class,'postForgetPass']);
+Route::post('verifyOtp',[CustomerController::class,'verifyOtp']);
+Route::post('change-newpassword',[CustomerController::class,'changeNewPassword'])->name('change-newpassword');
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 
