@@ -7,6 +7,7 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Slider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 //use Mail;
@@ -17,10 +18,12 @@ class HomeController extends Controller
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
         $products = Product::Where('product_status',1)->latest()->paginate(6);
-        return view('client.home.home',compact('categorys','brandes','products'));
+        $sliders = Slider::where('slider_status',1)->get();
+        return view('client.home.home',compact('categorys','brandes','products','sliders'));
     }
+
     public function login(){
-        return view('cus_login');
+        return view('cus_login'); 
     }
     public function register(){
         return view('cus_register');
@@ -33,6 +36,10 @@ class HomeController extends Controller
     }
     public function postForgetPass(Request $request){
         $customer = DB::table('tbl_customer')->where('cus_email', $request->customer_email)->first();
+        if(!$customer){
+            session()->put('message', 'Email bạn nhập không tồn tại trong hệ thống, Vui lòng nhập lại!');
+            return view('forgetPass');
+        }
         $securityCode = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
         $name = $customer->cus_name;
         $email = $customer->cus_email;

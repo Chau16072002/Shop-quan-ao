@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Slider extends Model
 {
-    protected $fillable = ['id','customer_id','product_id','message']; 
-    protected $guarded = [];
+    protected $fillable = ['id','name','description','slider_status','image_path','image_name']; 
+    //protected $guarded = [];
 }

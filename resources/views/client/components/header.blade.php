@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                        <a href="/trang-chu"><img src="{{ asset("fontend/images/logo.png") }}" alt="" /></a>
+                        <a href="/home"><img src="{{ asset("fontend/images/logo.png") }}" alt="" /></a>
                     </div>
 
                 </div>
@@ -43,7 +43,7 @@
                         <ul class="nav navbar-nav">
                             <li><a href="{{route('contact_us')}}"><i class="fa fa-envelope"></i> Contact</a></li>
                             <li><a href="{{route('showWishlist')}}"><i class="fa fa-star"></i> Wishlist</a></li>
-                            <li><a href="{{ URL::to('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                            <li><a href="/cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                             <?php $value = session()->get('cus_name');
 								if($value != null):
 									?>
@@ -69,8 +69,8 @@
                 <div class="col-sm-9">
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
-                            <li><a href="{{ route('trang_chu') }}" class="active">Home</a></li>
-
+                            <li><a href="/home" class="active">Home</a></li>
+                            <li><a href="/all-product">Product</a></li>
                         </ul>
                     </div>
                 </div>

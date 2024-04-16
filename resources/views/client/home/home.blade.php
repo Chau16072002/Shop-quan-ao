@@ -5,6 +5,21 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset("/fontend/home/home.css") }}">
+<style>
+.image-container {
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+    /* Đảm bảo hình ảnh không bị tràn ra khỏi container */
+}
+
+.image-container img {
+    width: 100%;
+    /* Hình ảnh sẽ chiếm toàn bộ chiều rộng của container */
+    height: auto;
+    /* Đảm bảo tỷ lệ khung hình bị thay đổi mà không bị biến dạng */
+}
+</style>
 @endsection
 
 @section('js')
@@ -19,58 +34,34 @@
             <div class="col-sm-12">
                 <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#slider-carousel" data-slide-to="1"></li>
-                        <li data-target="#slider-carousel" data-slide-to="2"></li>
+                        @foreach($sliders as $index => $slider)
+                        <li data-target="#slider-carousel" data-slide-to="{{ $index }}"
+                            {{ $index == 0 ? 'class=active' : '' }}></li>
+                        @endforeach
                     </ol>
-
                     <div class="carousel-inner">
-                        <div class="item active">
+                        @foreach($sliders as $index => $slider)
+                        <div class="item {{ $index == 0 ? 'active' : '' }}">
                             <div class="col-sm-6">
                                 <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free E-Commerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
+                                <h2>{{ $slider->name }}</h2>
+                                <p>{{ $slider->description }}</p>
+                                <!-- <button type="button" class="btn btn-default get">Shop Now</button> -->
                             </div>
                             <div class="col-sm-6">
-                                <img src="{{ asset("/fontend/images/girl1.jpg") }}" class="girl img-responsive"
-                                    alt="" />
-                                <img src="{{ asset("/fontend/images/pricing.png") }}" class="pricing" alt="" />
+                                <!-- Đặt kích thước tối đa cho hình ảnh -->
+                                <div class="image-container">
+                                    <img src="{{ asset($slider->image_path) }}" class="girl img-responsive" alt="" />
+                                    <!-- Nếu có hình ảnh pricing tương ứng với mỗi slider -->
+                                    @if($slider->pricing_image_path)
+                                    <img src="{{ asset($slider->pricing_image_path) }}" class="pricing" alt="" />
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>100% Responsive Design</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="{{ asset("/fontend/images/girl2.jpg") }}" class="girl img-responsive"
-                                    alt="" />
-                                <img src="images/home/pricing.png" class="pricing" alt="" />
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free Ecommerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="{{ asset("/fontend/images/girl3.jpg") }}" class="girl img-responsive"
-                                    alt="" />
-                                <img src="images/home/pricing.png" class="pricing" alt="" />
-                            </div>
-                        </div>
+                        @endforeach
 
                     </div>
-
                     <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
                         <i class="fa fa-angle-left"></i>
                     </a>
@@ -100,43 +91,25 @@
                                 <div class="productinfo text-center">
                                     <form>
                                         @csrf
-                                        <div class="form-group">
-                                            <input type="hidden" value="{{ $pro->id }}"
-                                                class="form-control cart_product_id_{{ $pro->id }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" value="{{ $pro->product_name }}"
-                                                class="form-control cart_product_name_{{ $pro->id }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" value="{{ $pro->product_image }}"
-                                                class="form-control cart_product_image_{{ $pro->id }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" value="{{ $pro->product_price }}"
-                                                class="form-control cart_product_price_{{ $pro->id }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" value="1"
-                                                class="form-control cart_product_qty_{{ $pro->id }}">
-                                        </div>
                                         <a href="{{route('detail',['id' => $pro->id])}}">
                                             <img style="width: 300px; height: 300px;"
                                                 src="{{ asset("$pro->product_image") }}" alt="">
                                             <h2>{{number_format($pro->product_price). ' '.'VND'}}</h2>
-                                            <p style="max-width: 300px; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$pro->product_name}}</p>
+                                            <input type="hidden" class="product_id" value="{{$pro->id}}">
+                                            <input type="hidden" class="product_price" value="{{$pro->product_price}}">
+                                            <p
+                                                style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                {{$pro->product_name}}</p>
                                         </a>
-                                        <button type="button" class="btn btn-default add-to-cart" name="add-to-cart"
-                                            data-id_product="{{ $pro->id }}">Thêm giỏ hàng</button>
+                                        <button type="button" class="btn btn-default add-to-cart" ><i
+                                                        class="fa fa-shopping-cart"></i>Add to cart</a></button>
                                     </form>
-
                                 </div>
                             </div>
                             <div class="choose">
                                 <ul class="nav nav-pills nav-justified">
                                     <?php $value = session()->get('cus_id');
 								if($value != null):?>
-
                                     <li><a data-url="{{ route('storeWishlist', ['id' =>$pro->id]) }}"
                                             class="action_wishlist"><i class="fa fa-plus-square"></i>Add to wishlist</a>
                                     </li>
@@ -149,6 +122,7 @@
                         </div>
                     </div>
                     @endforeach
+                    {{ $products->links() }}
                 </div>
                 <!--features_items-->
                 <br><br>
@@ -172,34 +146,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="{{ asset('/fontend/images/recommend2.jpg') }}" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <a href="#" class="btn btn-default add-to-cart"><i
-                                                        class="fa fa-shopping-cart"></i>Add to cart</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="{{ asset('/fontend/images/recommend3.jpg') }}" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <a href="#" class="btn btn-default add-to-cart"><i
-                                                        class="fa fa-shopping-cart"></i>Add to cart</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
@@ -211,7 +157,6 @@
                     </div>
                 </div>
                 <!--/recommended_items-->
-
             </div>
         </div>
     </div>

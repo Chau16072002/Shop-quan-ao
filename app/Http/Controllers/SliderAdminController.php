@@ -22,7 +22,6 @@ class SliderAdminController extends Controller
     public function __construct(Slider $slider){
         $this->slider = $slider;
     }
-
     public function index(){
         $this->AuthLogin();
         $sliders = $this->slider->latest()->paginate(5);
@@ -36,7 +35,6 @@ class SliderAdminController extends Controller
 
     public function store(SliderAddRequest $request){
         $this->AuthLogin();
-        try {
             $dataInsert = [
                 'name' => $request->name,
                 'description' => $request->description,
@@ -49,18 +47,13 @@ class SliderAdminController extends Controller
                 $dataInsert['image_name'] = $dataImageSlider['file_name'];
                 $dataInsert['image_path'] = $dataImageSlider['file_path'];
             }
-
             $this->slider->create($dataInsert);
             return redirect()->route('slider_index');
-        } catch (\Exception $ex) {
-            Log::error("Loi: " . $ex->getMessage() . "--Line: " . $ex->getLine());
-        }
-
     }
 
     public function unactive_slider($id) {
         $this->AuthLogin();
-        $data = $this->slider->where('id', $id)->update(['sliderphp_status'=>1]);
+        $data = $this->slider->where('id', $id)->update(['slider_status'=>1]);
         session()->put('message', 'Hiển thị slider thành công');
         return redirect()->route('slider_index');
 
@@ -103,7 +96,7 @@ class SliderAdminController extends Controller
     }
     public function delete($id){
         $this->slider->find($id)->delete();
-        session()->flash('message', 'Xóa slider sản phẩm thành công !!!');
+        session()->flash('message', 'Xóa slider thành công !!!');
         return redirect()->route('slider_index');
     }
 }

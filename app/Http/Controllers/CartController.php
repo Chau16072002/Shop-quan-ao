@@ -7,178 +7,80 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Product;
 use App\Models\ProductImage;
-use Cart;
-use App\Models\Coupon;
+use App\Models\Cart;
+use App\Models\Customer;
 
 
 session_start();
 
 class CartController extends Controller
 {
-    public function check_coupon(Request $request){
-        $data = $request->all();
-        $coupon = Coupon::where('coupon_code', $data['coupon'])->first();
-        if($coupon){
-            $cout_coupon = $coupon->count();
-            if($cout_coupon>0){
-                $coupon_session = Session::get('coupon');
-                if($coupon_session==true){
-                    $is_avaiable = 0;
-                    if($is_avaiable==0){
-                        $cou[] = array(
-                            'coupon_code' => $coupon->coupon_code,
-                            'coupon_condition' => $coupon->coupon_condition,
-                            'coupon_number' => $coupon->coupon_number,
-                        );
-                        Session::put('coupon', $cou);
-                    }
-                }else {
-                    $cou[] = array(
-                        'coupon_code' => $coupon->coupon_code,
-                        'coupon_condition' => $coupon->coupon_condition,
-                        'coupon_number' => $coupon->coupon_number,
-                    );
-                    Session::put('coupon', $cou);
-                }
+    private $cart;
 
-                Session::save();
-                return redirect()->back()->with('message', 'Thêm mã giảm giá thành công!!');
-            }
-        }else{
-            return redirect()->back()->with('error', 'Mã giảm giá không đúng!!');
+    public function AuthLogin(){
+        $customer_id = session()->get('cus_id');
+        if ($customer_id){
+           return redirect('/');
+        }else {
+            return redirect('/dang-nhap')->send();
         }
     }
-
-    public function gio_hang(Request $request){
-
-        return view('client.cart.cart_ajax');
+    public function __construct(Cart $cart){
+        $this->cart = $cart;
     }
-
-    public function add_cart_ajax(Request $request){
-        $data = $request->all();
-        $session_id = substr(md5(microtime()),rand(0,26),5);
-        $cart = Session::get('cart');
-        if($cart==true){
-            $is_avaiable = 0;
-            foreach($cart as $key => $val){
-                if($val['product_id']==$data['cart_product_id']){
-                    $is_avaiable++;
-                    $cart[] = array(
-                        'session_id' => $session_id,
-                        'product_qty' => $data['cart_product_qty']
-                        );
-                }
-            }
-            if($is_avaiable == 0){
-                $cart[] = array(
-                'session_id' => $session_id,
-                'product_name' => $data['cart_product_name'],
-                'product_id' => $data['cart_product_id'],
-                'product_image' => $data['cart_product_image'],
-                'product_qty' => $data['cart_product_qty'],
-                'product_price' => $data['cart_product_price'],
-                );
-                Session::put('cart',$cart);
-            }
-        }else{
-            $cart[] = array(
-                'session_id' => $session_id,
-                'product_name' => $data['cart_product_name'],
-                'product_id' => $data['cart_product_id'],
-                'product_image' => $data['cart_product_image'],
-                'product_qty' => $data['cart_product_qty'],
-                'product_price' => $data['cart_product_price'],
-
-            );
-            Session::put('cart',$cart);
+    public function add(Request $request){
+        if(!session()->get('cus_id')){
+            return response()->json(['success' => false]);
         }
-
-        Session::save();
-        //  Section::destroy();
-    }
-
-    public function delete_product($session_id){
-        $cart = Session::get('cart');
-        // echo '<pre>';
-        // print_r ($cart);
-        // echo '</pre>';
-        if($cart==true){
-            foreach($cart as $key => $val){
-                if ($val['session_id']==$session_id) {
-                    unset($cart[$key]);
-                }
+        else{
+            $data = [
+                'customer_id' => session()->get('cus_id'),
+                'product_id' =>  $request->input('productid'),
+                'quantily' => 1,
+                'price' => $request->input('productPrice')
+            ];
+            $product_id = $request->input('productid');
+            $cart = Cart::where('product_id',$product_id)->first();
+            if($cart){
+                $cart->quantily++;
+                $cart->save(); 
+                return response()->json(['success' => true]);
             }
-            Session::put('cart', $cart);
-            return redirect()->back()->with('message', 'Xóa sản phẩm thành công!!');
-        }else{
-            return redirect()->back()->with('message', 'Xóa sản phẩm không thành công!!');
+            else if($cart = $this->cart->create($data)){
+                return response()->json(['success' => true]);
+            }        
         }
     }
-
-    public function update_cart(Request $request){
-        $data = $request->all();
-        $cart = Session::get('cart');
-        if($cart==true){
-            foreach($data['cart_qty'] as $key => $qty){
-                foreach($cart as $session => $val){
-                    if($val['session_id']==$key){
-                        $cart[$session]['product_qty'] = $qty;
-                    }
-                }
-            }
-            Session::put('cart', $cart);
-            return redirect()->back()->with('message', 'Cập nhật giỏ hàng thành công!!');
-        }else{
-            return redirect()->back()->with('message', 'Cập nhật giỏ hàng không thành công!!');
+    public function show(){
+    $customer_id = session()->get('cus_id');
+    $cartItems = Cart::with('product')->where('customer_id', $customer_id)->get();
+    return view('client.cart.show_cart', compact('cartItems'));
+    }
+    public function updateQuantity(Request $request) {
+        $productId = $request->input('productid');
+        $newQuantity = $request->input('quantity');
+        $cartid = $request->input('cart_item_id');
+        // Tìm sản phẩm trong cơ sở dữ liệu
+        $cartItems = Cart::where('id',$cartid)->first();
+        if (!$cartItems) {
+            return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại'], 404);
         }
-
-    }
-
-    public function delete_all_product(){
-        $cart = Session::get('cart');
-        if($cart==true){
-            Session::forget('cart');
-            Session::forget('coupon');
-            return redirect()->back()->with('message', 'Xóa hết giỏ hàng thành công!!');
+        // Cập nhật số lượng sản phẩm
+        $cartItems->quantily = $newQuantity;
+        $cartItems->save();  
+        $cart = Cart::all();
+        $total = 0;
+        foreach($cart as $c){
+            $total += $c->price * $c->quantily;
         }
+        return response()->json(['success' => true, 'message' => 'Số lượng sản phẩm đã được cập nhật','total' => $total]);
     }
-
-    public function save_cart(Request $request){
-        $productId = $request->productid_hidden;
-        $quantity = $request->qty;
-
-        $product_info = $this->product->where('id',$productId)->first();
-        // Cart::add('293ad', 'Product 1', 1, 9.99, 550);
-        $data['id'] = $product_info->id;
-        $data['qty'] = $quantity;
-        $data['name'] = $product_info->product_name;
-        $data['price'] = $product_info->product_price;
-        $data['weight'] = $product_info->product_price;
-        $data['options']['image'] = $product_info->product_image;
-
-        Cart::add($data);
-        Cart::setGlobalTax(10);
-
-        // Cart::destroy();
-        return redirect('show_cart');
-
-    }
-
-    public function show_cart(){
-
-        return view('client.cart.show_cart');
-    }
-
-    public function delete_cart($rowId){
-        Cart::update($rowId, 0);
-        return redirect('show_cart');
-    }
-
-    public function update_cart_qty(Request $request){
-        $rowId = $request->rowId_cart;
-        $qty = $request->cart_quantity;
-
-        Cart::update($rowId, $qty);
-        return redirect('show_cart');
+    public function deleteCart($id){
+        $cart = Cart::find($id);
+        if (!$cart) {
+            return response()->json(['error' => 'Cart not found'], 404);
+        }
+        $cart->delete();
+        return response()->json(['success' => 'cart deleted successfully']);
     }
 }

@@ -83,48 +83,48 @@
         $(document).on('click', '.action_wishlist', actionWishlist);
     });
 
-    $(document).ready(function() {
-        $('.add-to-cart').click(function(event) {
-            event.preventDefault();
-            var id = $(this).data('id_product');
-            var cart_product_id = $('.cart_product_id_' + id).val();
-            var cart_product_name = $('.cart_product_name_' + id).val();
-            var cart_product_image = $('.cart_product_image_' + id).val();
-            var cart_product_price = $('.cart_product_price_' + id).val();
-            var cart_product_qty = $('.cart_product_qty_' + id).val();
-            var _token = $('input[name="_token"]').val();
+    // $(document).ready(function() {
+    //     $('.add-to-cart').click(function(event) {
+    //         event.preventDefault();
+    //         var id = $(this).data('id_product');
+    //         var cart_product_id = $('.cart_product_id_' + id).val();
+    //         var cart_product_name = $('.cart_product_name_' + id).val();
+    //         var cart_product_image = $('.cart_product_image_' + id).val();
+    //         var cart_product_price = $('.cart_product_price_' + id).val();
+    //         var cart_product_qty = $('.cart_product_qty_' + id).val();
+    //         var _token = $('input[name="_token"]').val();
 
-            $.ajax({
-                url: '{{url(' / add - cart - ajax ')}}',
-                method: 'POST',
-                data: {
-                    cart_product_id: cart_product_id,
-                    cart_product_name: cart_product_name,
-                    cart_product_image: cart_product_image,
-                    cart_product_price: cart_product_price,
-                    cart_product_qty: cart_product_qty,
-                    _token: _token
-                },
+    //         $.ajax({
+    //             url: '{{url(' / add - cart - ajax ')}}',
+    //             method: 'POST',
+    //             data: {
+    //                 cart_product_id: cart_product_id,
+    //                 cart_product_name: cart_product_name,
+    //                 cart_product_image: cart_product_image,
+    //                 cart_product_price: cart_product_price,
+    //                 cart_product_qty: cart_product_qty,
+    //                 _token: _token
+    //             },
 
-                success: function(data) {
-                    Swal.fire({
-                            title: "Đã thêm sản phẩm vào giỏ hàng",
-                            text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
-                            showCancelButton: true,
-                            cancelButtonText: "Xem tiếp",
-                            confirmButtonClass: "btn-success",
-                            confirmButtonText: "Đi đến giỏ hàng",
-                            closeOnConfirm: false
+    //             success: function(data) {
+    //                 Swal.fire({
+    //                         title: "Đã thêm sản phẩm vào giỏ hàng",
+    //                         text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+    //                         showCancelButton: true,
+    //                         cancelButtonText: "Xem tiếp",
+    //                         confirmButtonClass: "btn-success",
+    //                         confirmButtonText: "Đi đến giỏ hàng",
+    //                         closeOnConfirm: false
 
-                        },
-                        function() {
-                            window.location.href = "{{url('/gio-hang')}}";
-                        }
-                    );
-                }
-            });
-        });
-    });
+    //                     },
+    //                     function() {
+    //                         window.location.href = "{{url('/gio-hang')}}";
+    //                     }
+    //                 );
+    //             }
+    //         });
+    //     });
+    // });
     </script>
     <script>
     $(document).ready(function() {
@@ -228,7 +228,6 @@
         ev.preventDefault();
         let content = $('#comment-content').val();
         let productid = $('#productid').val();
-        console.log(content);
         let _commentUrl = "{{route('comment.add')}}";
         console.log(_commentUrl);
         $.ajax({
@@ -252,9 +251,7 @@
     $(document).ready(function() {
         $('.delete-comment').click(function(event) {
             event.preventDefault();
-
             var commentId = $(this).data('comment-id');
-            console.log(commentId);
             $.ajax({
                 url: '/comments/' + commentId,
                 type: 'GET',
@@ -308,6 +305,77 @@
                     alert('Error editing comment');
                 }
             });
+        });
+    });
+    $('.add-to-cart').click(function(ev) {
+        ev.preventDefault();
+        var $parent = $(this).closest('form');
+        var productid = $parent.find('.product_id').val();
+        var productPrice = $parent.find('.product_price').val();
+        console.log(productPrice);
+        console.log(productid);
+        let _commentUrl = "{{route('cart.add')}}";
+        console.log(_commentUrl);
+        $.ajax({
+            url: _commentUrl,
+            method: 'POST',
+            data: {
+                productid: productid,
+                productPrice: productPrice,
+                _token: _csrf
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Add cart successfully');
+                } else {
+                    window.location.href = '/dang-nhap';
+                }
+            }
+        });
+    })
+
+    function updateQuantity(cartItemId, change) {
+        var quantityInput = document.getElementById('quantity_' + cartItemId);
+        var currentValue = parseInt(quantityInput.value);
+        var newQuantity = currentValue + change;
+        if (newQuantity < 1) {
+            return; // Đảm bảo số lượng không nhỏ hơn 1
+        }
+        quantityInput.value = newQuantity;
+        //console.log(cartItemId);
+        // Gửi yêu cầu AJAX để cập nhật dữ liệu
+        var url = '/update_quantity'; // Đường dẫn đến route cập nhật số lượng sản phẩm
+        var data = {
+            cart_item_id: cartItemId,
+            quantity: newQuantity,
+            _token: _csrf
+        };
+        $.post(url, data, function(response) {
+            if (!response.success) {
+                alert('Sản phẩm không tồn tại vui lòng thử lại')
+                location.reload();
+            }
+            var total = response.total
+            let tong = document.getElementById('totalPrice');
+            tong.innerHTML = "Tổng tiền: "+total;
+        });
+    }
+    $('.delete_form_cart').click(function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+        var productId = $(this).data('product-id');
+        $.ajax({
+            url: '/cart/delete/' + productId, // Đường dẫn đến route xử lý yêu cầu xóa
+            type: 'GET',
+            _token: _csrf,
+            success: function(response) {
+                //Xóa bình luận khỏi giao diện người dùng
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                //console.error(xhr.responseText);
+                alert('Error deleting cart');
+                location.reload();
+            }
         });
     });
     </script>

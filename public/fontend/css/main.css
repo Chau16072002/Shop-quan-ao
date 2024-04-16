@@ -2543,3 +2543,22 @@ h2.title {
     border-radius: 5px;
 }
 
+
+.quantity {
+  display: flex;
+  align-items: center;
+}
+
+.btn-minus,
+.btn-plus {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f0f0f0;
+  font-size: 16px;
+}
+
+#quantity {
+  width: 50px;
+  text-align: center;
+}

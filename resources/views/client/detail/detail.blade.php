@@ -19,58 +19,34 @@
             <div class="col-sm-12">
                 <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#slider-carousel" data-slide-to="1"></li>
-                        <li data-target="#slider-carousel" data-slide-to="2"></li>
+                        @foreach($sliders as $index => $slider)
+                        <li data-target="#slider-carousel" data-slide-to="{{ $index }}"
+                            {{ $index == 0 ? 'class=active' : '' }}></li>
+                        @endforeach
                     </ol>
-
                     <div class="carousel-inner">
-                        <div class="item active">
+                        @foreach($sliders as $index => $slider)
+                        <div class="item {{ $index == 0 ? 'active' : '' }}">
                             <div class="col-sm-6">
                                 <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free E-Commerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
+                                <h2>{{ $slider->name }}</h2>
+                                <p>{{ $slider->description }}</p>
+                                <!-- <button type="button" class="btn btn-default get">Shop Now</button> -->
                             </div>
                             <div class="col-sm-6">
-                                <img src="{{ asset("/fontend/images/girl1.jpg") }}" class="girl img-responsive"
-                                    alt="" />
-                                <img src="{{ asset("/fontend/images/pricing.png") }}" class="pricing" alt="" />
+                                <!-- Đặt kích thước tối đa cho hình ảnh -->
+                                <div class="image-container">
+                                    <img src="{{ asset($slider->image_path) }}" class="girl img-responsive" alt="" />
+                                    <!-- Nếu có hình ảnh pricing tương ứng với mỗi slider -->
+                                    @if($slider->pricing_image_path)
+                                    <img src="{{ asset($slider->pricing_image_path) }}" class="pricing" alt="" />
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>100% Responsive Design</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="{{ asset("/fontend/images/girl2.jpg") }}" class="girl img-responsive"
-                                    alt="" />
-                                <img src="images/home/pricing.png" class="pricing" alt="" />
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free Ecommerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="{{ asset("/fontend/images/girl3.jpg") }}" class="girl img-responsive"
-                                    alt="" />
-                                <img src="images/home/pricing.png" class="pricing" alt="" />
-                            </div>
-                        </div>
+                        @endforeach
 
                     </div>
-
                     <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
                         <i class="fa fa-angle-left"></i>
                     </a>
@@ -88,7 +64,7 @@
     <div class="container">
         <div class="row">
             @include('client.components.sidebar')
-
+            <h2 class="title text-center">Product Detail</h2>
             <div class="col-sm-9 padding-right">
                 <div class="product-details">
                     <!--product-details-->
@@ -97,7 +73,6 @@
                     <div class="col-sm-5">
                         <div class="view-product">
                             <img src="{{$pro->product_image}}" alt="" />
-                            <h3>ZOOM</h3>
                         </div>
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
 
@@ -107,14 +82,8 @@
                                     @foreach($pro->images as $ImageItem)
                                     <img style="width: 60px;" src="{{$ImageItem->image_path}}" alt="">
                                     @endforeach
-
-
-
-
                                 </div>
-
                             </div>
-
                             <!-- Controls -->
                             <a class="left item-control" href="#similar-product" data-slide="prev">
                                 <i class="fa fa-angle-left"></i>
@@ -130,17 +99,15 @@
                             <!--/product-information-->
                             <img src="images/product-details/new.jpg" class="newarrival" alt="" />
                             <h2>{{$pro->product_name}}</h2>
-                            <p>Web ID: {{$pro->id}}</p>
                             <?php $value = $pro->id; ?>
                             <img src="images/product-details/rating.png" alt="" />
-                            <form action="{{ route('cart_store') }}" method="POST">
+                            <form action="" method="POST">
                                 @csrf
                                 <span>
-                                    <span>{{$pro->product_price}}</span>
-                                    <label>Quantity:</label>
-                                    <input name="qty" type="number" value="1" />
-                                    <input name="productid_hidden" type="hidden" value="{{$pro->id}}" />
-                                    <button type="submit" class="btn btn-fefault cart">
+                                    <span>{{$pro->product_price}} VND</span>
+                                    <input type="hidden" class="product_id" value="{{$pro->id}}">
+                                    <input type="hidden" class="product_price" value="{{$pro->product_price}}">
+                                    <button type="button" class="btn btn-default add-to-cart">
                                         <i class="fa fa-shopping-cart"></i>
                                         Add to cart
                                     </button>
@@ -164,7 +131,6 @@
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#details" data-toggle="tab">Describe</a></li>
-                            <li><a href="#companyprofile" data-toggle="tab">Product detail</a></li>
                             <li><a href="#ratings" data-toggle="tab">Evaluate</a></li>
                             <li><a href="#reviews" data-toggle="tab">Reviews (<?php echo $commentCount ?>)</a></li>
                         </ul>
@@ -262,19 +228,41 @@
                     <div class="item active">
                         @foreach ($relativeProducts as $relative )
                         <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{$relative->product_image}}" alt="" />
-                                        <h2>{{$relative->product_price}}</h2>
-                                        <p>{{$relative->product_name}}</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                    <form>
+                                        @csrf
+                                        <a href="{{route('detail',['id' => $pro->id])}}">
+                                            <img style="width: 300px; height: 300px;"
+                                                src="{{ asset("$relative->product_image") }}" alt="">
+                                            <h2>{{number_format($relative->product_price). ' '.'VND'}}</h2>
+                                            <input type="hidden" class="product_id" value="{{$relative->id}}">
+                                            <input type="hidden" class="product_price" value="{{$relative->product_price}}">
+                                            <p
+                                                style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                {{$relative->product_name}}</p>
+                                        </a>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                        class="fa fa-shopping-cart"></i>Add to cart</a></button>
+                                    </form>
                                 </div>
                             </div>
+                            <div class="choose">
+                                <ul class="nav nav-pills nav-justified">
+                                    <?php $value = session()->get('cus_id');
+								if($value != null):?>
+                                    <li><a data-url="{{ route('storeWishlist', ['id' =>$pro->id]) }}"
+                                            class="action_wishlist"><i class="fa fa-plus-square"></i>Add to wishlist</a>
+                                    </li>
+                                    <?php
+								endif; if($value == null):?>
+                                    <li><a href="/dang-nhap"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
                         </div>
+                    </div>
                         @endforeach
 
                     </div>

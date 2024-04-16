@@ -21,7 +21,7 @@ use App\Models\Wishlist;
 use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Customer;
-
+use App\Models\Slider;
 
 session_start();
 
@@ -71,6 +71,10 @@ class ProductController extends Controller
         $products =  $this->product->latest()->paginate(5);
         return view('admin.products.all_product', compact('products'));
     }
+    public function allproudct() {
+        $products =  $this->product->get();
+        return view('all-product', compact('products'));
+    }
     public function getCategory($parentId){
         $data = $this->category->all();
         $recusive = new Recusive($data);
@@ -95,6 +99,7 @@ class ProductController extends Controller
             $product = $this->product->create($dataProduct);
             session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
 
+
         //Insert data to product images
         if($request->hasFile('image_path')){
             foreach($request->image_path as $fileItem){
@@ -107,6 +112,7 @@ class ProductController extends Controller
             }
 
             session()->flash('message', 'Thêm danh mục sản phẩm thành công !!!');
+            return redirect()->route('product_create');
            
         }
         else{
@@ -262,6 +268,7 @@ class ProductController extends Controller
         $brandes = Brand::where('brand_status',1)->get();
         $comments = Comment::where('product_id',$id)->get();
         $rating =  Rating::where('product_id',$id)->avg('rating');
+        $sliders = Slider::where('slider_status',1)->get();
         $rating1 = round($rating);
         //Lấy tổng số bình luận của 1 sản phẩm
         $commentCount = 0;
@@ -275,7 +282,7 @@ class ProductController extends Controller
         $relativeProducts = Product::where('category_id',$category_id)->whereNotIn('id',[$id])->get();
 
 
-        return view('client.detail.detail',compact('product','categorys','brandes','relativeProducts','rating1','comments','commentCount'));
+        return view('client.detail.detail',compact('sliders','product','categorys','brandes','relativeProducts','rating1','comments','commentCount'));
     }
 
 
@@ -301,5 +308,8 @@ class ProductController extends Controller
         ], 200);
     
     }
+
+
+  
 
 }

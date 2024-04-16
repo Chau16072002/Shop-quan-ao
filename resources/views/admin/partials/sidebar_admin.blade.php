@@ -6,7 +6,7 @@
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a class="active" href="">
+                    <a class="active" href="/dashboard">
                         <i class="fa fa-dashboard"></i>
                         <span>Tổng quan</span>
                     </a>

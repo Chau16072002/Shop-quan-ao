@@ -26,7 +26,7 @@ use App\Http\Controllers\CommentController;
 
 //Fontend
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/trang-chu', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
 Route::get('/dang-nhap',[HomeController::class, 'login']);
 Route::get('/dang-ky',[HomeController::class,'register']);
 Route::post('/',[CustomerController::class, 'login']);
@@ -41,8 +41,9 @@ Route::get('/contact-us',[HomeController::class,'contact'])->name('contact_us');
 Route::get('/detail/{id}',[ProductController::class,'ProductDetail'])->name('detail');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/contactt-us',[ContactController::class,'sendContact']);
+Route::get('/all-product',[ProductController::class,'allproudct']);
 
-// Định nghĩa route để xử lý yêu cầu POST thêm comment
+// Định nghĩa route để xử lý yêu cầu comment
 Route::post('/comment/add', [CommentController::class,'add'])->name('comment.add');
 Route::get('/comments/{id}', [CommentController::class,'delete'])->name('comments.destroy');
 Route::get('/commentts/{id}',  [CommentController::class,'update'])->name('comments.update');
@@ -52,9 +53,13 @@ Route::get('forget-password',[HomeController::class, 'forgetPass']);
 Route::post('postForgetPass',[HomeController::class,'postForgetPass']);
 Route::post('verifyOtp',[CustomerController::class,'verifyOtp']);
 Route::post('change-newpassword',[CustomerController::class,'changeNewPassword'])->name('change-newpassword');
+//Cart
+Route::post('cart/add',[CartController::class,'add'])->name('cart.add');
+Route::get('/cart', [CartController::class,'show']);
+Route::post('/update_quantity', [CartController::class, 'updateQuantity'])->name('update_quantity');
+Route::get('/cart/delete/{id}',[CartController::class,'deleteCart']);
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
-
 //Backend
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->name('show_dashboard');
@@ -138,15 +143,6 @@ Route::prefix('admins')->group(function () {
     Route::get('/delete/{id}', [AdminController::class, 'deleteAdmin'])->name('admin_delete');
 });
 //Cart
-Route::post('/update_cart_qty', [CartController::class, 'update_cart_qty'])->name('update_cart_qty');
-Route::post('/update-cart', [CartController::class, 'update_cart']);
-Route::post('/cart', [CartController::class, 'save_cart'])->name('cart_store');
-Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);
-Route::get('/show_cart', [CartController::class, 'show_cart'])->name('show_cart');
-Route::get('/gio-hang', [CartController::class, 'gio_hang'])->name('gio_hang');
-Route::get('/delete_cart/{rowId}', [CartController::class, 'delete_cart'])->name('delete_cart');
-Route::get('/delete-sp/{session_id}', [CartController::class, 'delete_product']);
-Route::get('/del-all-product', [CartController::class, 'delete_all_product']);
 
 //Coupon
 Route::post('/check-coupon', [CartController::class, 'check_coupon']);
