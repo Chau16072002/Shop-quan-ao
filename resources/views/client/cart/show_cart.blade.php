@@ -21,8 +21,10 @@
                         <td></td>
                     </tr>
                 </thead>
+               
                 <tbody>
-                    <?php    $total = 0;?>
+ 
+                    <?php $total = 0;?>
                     @foreach ($cartItems as $cartItem)
                     <tr>
                         <td class="cart_product">
@@ -42,7 +44,7 @@
                                     <input type="number" id="quantity_{{ $cartItem->id }}"
                                         value="{{ $cartItem->quantily }}" min="1"
                                         onchange="updateQuantity({{ $cartItem->id }}, 0)">
-                                    <input type="hidden" id="productid_{{ $cartItem->product_id }}"-
+                                    <input type="hidden" id="productid_{{ $cartItem->product_id }}" -
                                         value="{{ $cartItem->product_id }}">
                                     <button class="btn-plus" onclick="updateQuantity({{ $cartItem->id }}, 1)">+</button>
                                 </div>
@@ -53,19 +55,27 @@
                         <td class="cart_total">
                             <p class="cart_total_price">
                                 <?php
-                                //  echo number_format($total).' '.'VND';
+                               
                                 ?>
                             </p>
                         </td>
                         <td class="cart_delete">
-                            <a href="#" class="delete_form_cart" data-product-id="{{ $cartItem->id }}"><i class="fa fa-times"></i></a>
+                            <a href="#" class="delete_form_cart" data-product-id="{{ $cartItem->id }}"><i
+                                    class="fa fa-times"></i></a>
                         </td>
                     </tr>
                     @endforeach
+
                 </tbody>
 
             </table>
-            <h2 id="totalPrice" style="padding-right:50px; text-align: right; font-weight: bold; color: red;">Tổng tiền: <?php echo $total?></h2>
+            <?php
+                    if(count($cartItems) == 0):?>
+                        <h3 style="text-align: center;">Không Có Sản Phẩm Nào Trong Giỏ Hàng</h3>
+                    <?php
+                    endif;?>
+            <h2 id="totalPrice" style="padding-right:50px; text-align: right; font-weight: bold; color: red;">Tổng tiền:
+                <?php echo number_format($total).' '.'VND';?></h2>
         </div>
     </div>
 </section>
@@ -134,13 +144,20 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Tổng<span><?php echo $total ?></span></li>
-                        <li>Thuế <span>{{ Cart::tax(0, ',', '.').' '.'VND' }}</span></li>
+                        <li>Tổng<span><?php echo number_format($total).' '.'VND'; ?></span></li>
+                        <?php $vat = $total * 0.1;?>
+                        <li>Thuế 10% <span><?php echo number_format($vat).' '.'VND';?></span></li>
                         <li>Phí vận chuyển <span>Free</span></li>
-                        <li>Thành tiền <span>{{ Cart::total(0, ',', '.').' '.'VND' }}</span></li>
+                        <li>Thành tiền
+                            <span><?php $totalIncludeVAT = $total + $vat; echo number_format($totalIncludeVAT).' '.'VND';?></span>
+                        </li>
                     </ul>
                     {{-- <a class="btn btn-default update" href="">Update</a> --}}
-                    <a class="btn btn-default check_out" href="">Thanh toán</a>
+                    <form action="/cart/payment/{{session()->get('cus_id')}}" method="post">
+                    @csrf
+                    @method('DELETE')
+                        <button class="btn btn-default check_out" type="submit">Thanh toán</button>
+                    </form>
                 </div>
             </div>
         </div>

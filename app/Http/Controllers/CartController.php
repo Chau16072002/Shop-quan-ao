@@ -83,4 +83,8 @@ class CartController extends Controller
         $cart->delete();
         return response()->json(['success' => 'cart deleted successfully']);
     }
+    public function paymentAllProducts($id){
+        $cart = Cart::where('customer_id', $id)->delete();
+        return view('/cart');
+    }
 }

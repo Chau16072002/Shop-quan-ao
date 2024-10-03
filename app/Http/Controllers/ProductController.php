@@ -61,14 +61,13 @@ class ProductController extends Controller
     }
     public function index1($id) {
 
-
          $products =  Product::where('id',$id)->where('product_status',1)->get();
          return view('client.wishlist.wishlist', compact('products'));
     }
     public function index() {
         $this->AuthLogin();
 
-        $products =  $this->product->latest()->paginate(5);
+        $products =  $this->product->latest()->paginate(9);
         return view('admin.products.all_product', compact('products'));
     }
     public function allproudct() {

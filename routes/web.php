@@ -43,6 +43,7 @@ Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/contactt-us',[ContactController::class,'sendContact']);
 Route::get('/all-product',[ProductController::class,'allproudct']);
 
+
 // Định nghĩa route để xử lý yêu cầu comment
 Route::post('/comment/add', [CommentController::class,'add'])->name('comment.add');
 Route::get('/comments/{id}', [CommentController::class,'delete'])->name('comments.destroy');
@@ -58,6 +59,7 @@ Route::post('cart/add',[CartController::class,'add'])->name('cart.add');
 Route::get('/cart', [CartController::class,'show']);
 Route::post('/update_quantity', [CartController::class, 'updateQuantity'])->name('update_quantity');
 Route::get('/cart/delete/{id}',[CartController::class,'deleteCart']);
+Route::delete('/cart/payment/{id}',[CartController::class,'paymentAllProducts']);
 //Backend
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('trang_chu');
 //Backend

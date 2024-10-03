@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Database\Seeders\ProductSeeder; // Gọi seeder cho bảng products
+use Database\Seeders\CategorySeeder; // Gọi seeder cho bảng categories
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,5 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+        $this->call(ProductSeeder::class);
+        //$this->call(CategorySeeder::class);
     }
 }

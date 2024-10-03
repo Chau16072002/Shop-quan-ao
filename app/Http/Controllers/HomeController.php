@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index() {
         $categorys = Category::where('parent_id',0)->get();
         $brandes = Brand::where('brand_status',1)->get();
-        $products = Product::Where('product_status',1)->latest()->paginate(6);
+        $products = Product::Where('product_status',1)->latest()->paginate(9);
         $sliders = Slider::where('slider_status',1)->get();
         return view('client.home.home',compact('categorys','brandes','products','sliders'));
     }

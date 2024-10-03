@@ -25,8 +25,8 @@ class RequestPassword extends FormRequest
     {
         return [
             'current_password' => 'required',
-            'new_password' => 'required',
-            'new_password_confirmation' => 'required|same:new_password',
+            'new_password' => 'required|confirmed',
+            'new_password_confirmation' => 'required',
         ];
     }
     public function messages()
@@ -34,8 +34,8 @@ class RequestPassword extends FormRequest
         return [
         'current_password.required' => 'Trường này không được để trống',
         'new_password.required' => 'Trường này không được để trống',
-        'new_password_confirmation.required' => 'Trường này không được để trống',
-        'new_password_confirmation.same' => 'Mật khẩu nhập lại không đúng',
+        'new_password.confirmed' => 'Mật khẩu nhập lại không đúng',
+        'new_password_confirmation.required' => 'Trường này không được để trống',  
         ];
     }
 }

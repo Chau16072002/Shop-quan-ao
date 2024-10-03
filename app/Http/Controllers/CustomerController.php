@@ -159,7 +159,7 @@ class CustomerController extends Controller
         }
     }
     public function changeNewPassword(Request $request){
-        if($request->new_password == $request->new_password_confirmation){
+        if($request->new_password == $request->password_confirmation){
             DB::table('tbl_customer')
                 ->where('cus_email', $request->cus_email)->update(['cus_password' => md5($request->new_password)]);
             return redirect('dang-nhap')->with('mesage','Mật khẩu đã được cập nhật thành công');
